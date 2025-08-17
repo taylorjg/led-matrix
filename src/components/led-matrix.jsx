@@ -66,7 +66,7 @@ export const LedMatrix = () => {
           drawLedWithState(row, col, false)
         ))
       ))}
-      {dimensions && drawLedWithState(4, 23, true)}
+      {dimensions && drawLedWithState(4, 7, true)}
     </svg>
   );
 };

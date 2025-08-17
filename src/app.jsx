@@ -1,4 +1,4 @@
-import {LedMatrix} from "./led-matrix";
+import { LedMatrix } from "@app/components/led-matrix";
 
 export const App = () => {
   return (
