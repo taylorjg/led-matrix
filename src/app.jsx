@@ -1,57 +1,22 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { LedMatrix } from "@app/components/led-matrix";
-import { fontMap2 as fontMap } from "@app/font";
-import { NUM_VERTICAL_DOTS } from "@app/components/led-matrix";
+import { useRequestAnimationFrame } from "@app/hooks";
+import { makeMessageMatrix } from "@app/helpers";
 
-const appendCharacterToMatrix = (matrix, ch) => {
-  const data = fontMap.get(ch);
-
-  if (!data) {
-    console.warn(`Character "${ch}" not found in fontMap.`);
-    return;
-  }
-
-  matrix.forEach((line, index) => {
-    const characterLine = (data.lines[index] ?? "").slice(data.start, data.end + 1);
-    const newLine = line + characterLine;
-    matrix[index] = newLine;
-  });
-};
-
-const makeMessageMatrix = (message) => {
-  const matrix = Array(NUM_VERTICAL_DOTS).fill("");
-  const chs = Array.from(message);
-  for (const ch of chs) {
-    appendCharacterToMatrix(matrix, ch);
-  }
-  return matrix;
-};
-
-const message = "Next: Deansgate-Castlefield";
-const messageMatrix = makeMessageMatrix(message);
+const MESSAGE = "Next: Deansgate-Castlefield";
 
 export const App = () => {
   const [offset, setOffset] = useState(0);
+  const [messageMatrix] = useState(() => makeMessageMatrix(MESSAGE));
 
-  useEffect(() => {
-    let lastTimestamp = 0;
-    const step = (timestamp) => {
-      if (timestamp - lastTimestamp > 100) {
-        lastTimestamp = timestamp;
-        setOffset((value) => {
-          const newValue = value + 1;
-          if (newValue >= messageMatrix[0].length) {
-            return 0;
-          }
-          return newValue;
-        });
-      }
+  const callback = useCallback(() => {
+    setOffset((value) => {
+      const newValue = value + 1;
+      return newValue < messageMatrix[0].length ? newValue : 0;
+    });
+  }, [messageMatrix]);
 
-      requestAnimationFrame(step);
-    };
-
-    requestAnimationFrame(step);
-  }, []);
+  useRequestAnimationFrame(callback, 200);
 
   return (
     <div style={{ height: "10vh" }} >
