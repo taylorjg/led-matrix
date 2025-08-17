@@ -1,28 +1,20 @@
+import { range } from "@app/utils";
 import { useEffect, useRef, useState } from "react";
 
-const NUM_VERTICAL_DOTS = 11;
+export const NUM_VERTICAL_DOTS = 15;
 
-export const LedMatrix = () => {
+export const LedMatrix = ({ messageMatrix }) => {
   const svgRef = useRef();
   const [dimensions, setDimensions] = useState();
 
   useEffect(() => {
     if (!dimensions)  {
-
       const rect = svgRef.current.getBoundingClientRect();
-
-      // g = d / 10
-      // numDots . d + (numDots - 1) . g = h
-      // numDots . d + (numDots - 1) . (d / 10) = h
-      // 10 . numDots . (d / 10) + (numDots - 1) . (d / 10) = h
-      // d = 10 . h / (11 . numDots - 1)
       const numerator = 10 * rect.height;
       const denominator = 11 * NUM_VERTICAL_DOTS - 1;
       const diameter = Math.floor(numerator / denominator);
-
       const radius = diameter / 2;
       const gap = diameter / 10;
-
       const numRows = NUM_VERTICAL_DOTS
       const numCols = Math.floor(rect.width / (diameter + gap));
       const marginX = (rect.width - (numCols * (diameter + gap) - gap)) / 2;
@@ -71,14 +63,22 @@ export const LedMatrix = () => {
     return state ? drawLedOn(row, col) : drawLedOff(row, col);
   };
 
+  const drawMessageMatrix = () => {
+    if (!messageMatrix || !dimensions) return null;
+
+    return range(dimensions.numRows).map((row) => (
+        range(dimensions.numCols).map((col) => {
+          const line = messageMatrix[row] ?? "";
+          const ch = line.at(col);
+          const state = ch === "x";
+          return drawLedWithState(row, col, state);
+        })
+      ));
+  };
+
   return (
     <svg ref={svgRef} width="100%" height="100%" style={{ backgroundColor: "#888" }}>
-      {dimensions && Array.from({ length: dimensions.numRows }).map((_, row) => (
-        Array.from({ length: dimensions.numCols }).map((_, col) => (
-          drawLedWithState(row, col, false)
-        ))
-      ))}
-      {dimensions && drawLedWithState(4, 7, true)}
+      {drawMessageMatrix()}
     </svg>
   );
 };
