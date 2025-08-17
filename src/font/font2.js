@@ -3,17 +3,17 @@ import { range } from "@app/utils";
 // https://typofoto.wordpress.com/2014/06/19/dot-matrix-fonts/
 
 const uppercaseLetters = `
-                    
-  xx  xxx   xx  xxx 
- x  x x  x x  x x  x
- x  x x  x x    x  x
- xxxx xxx  x    x  x
- x  x x  x x    x  x
- x  x x  x x  x x  x
- x  x xxx   xx  xxx 
-                    
-                    
-                    `;
+                                                                                                                                        
+  xx  xxx   xx  xxx  xxxx xxxx  xx  x  x xxx  xxx x  x x    x   x x  x  xx  xxx   xx   xxx   xx  xxxxx x  x x   x x   x x   x x   x xxxx
+ x  x x  x x  x x  x x    x    x  x x  x  x     x x  x x    xx xx xx x x  x x  x x  x  x  x x  x   x   x  x x   x x   x x   x x   x    x
+ x  x x  x x    x  x x    x    x    x  x  x     x x x  x    x x x x xx x  x x  x x  x  x  x x      x   x  x x   x x   x  x x   x x    x 
+ xxxx xxx  x    x  x xxx  xxx  x xx xxxx  x     x xx   x    x x x x  x x  x xxx  x  x  xxx   xx    x   x  x x   x x x x   x     x    x  
+ x  x x  x x    x  x x    x    x  x x  x  x     x x x  x    x   x x  x x  x x    x xx  x x     x   x   x  x x   x x x x  x x    x   x   
+ x  x x  x x  x x  x x    x    x  x x  x  x  x  x x  x x    x   x x  x x  x x    x  x  x  x x  x   x   x  x  x x  xx xx x   x   x   x   
+ x  x xxx   xx  xxx  xxxx x     xx  x  x xxx  xx  x  x xxxx x   x x  x  xx  x     xx x x  x  xx    x    xx    x   x   x x   x   x   xxxx
+                                                                                                                                        
+                                                                                                                                        
+                                                                                                                                        `;
 
 const lowercaseLetters = `
                                                                                                                                 
@@ -27,6 +27,20 @@ const lowercaseLetters = `
                                   x          x                        x       x                                          x      
                                xxx         xx                         x       x                                       xxx       
                                                                                                                                 `;
+
+const symbols = `
+      
+      
+      
+      
+     x
+ xxx  
+     x
+      
+      
+      
+      
+`;
 
 const findBreaks = (lines) => {
   const lineLength = lines[0].length;
@@ -55,7 +69,8 @@ const makeCharacterKvps = (characters, line) => {
 };
 
 export const fontMap2 = new Map([
-  ...makeCharacterKvps("ABCD", uppercaseLetters),
+  ...makeCharacterKvps("ABCDEFGHIJKLMNOPQRSTUVWXYZ", uppercaseLetters),
   ...makeCharacterKvps("abcdefghijklmnopqrstuvwxyz", lowercaseLetters),
+  ...makeCharacterKvps("-:", symbols),
   [" ", { lines: Array(11).fill("    "), start: 0, end: 3 }],
 ]);

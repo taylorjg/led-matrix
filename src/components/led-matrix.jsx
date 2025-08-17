@@ -1,7 +1,7 @@
 import { range } from "@app/utils";
 import { useEffect, useRef, useState } from "react";
 
-export const NUM_VERTICAL_DOTS = 15;
+export const NUM_VERTICAL_DOTS = 11;
 
 export const LedMatrix = ({ messageMatrix }) => {
   const svgRef = useRef();

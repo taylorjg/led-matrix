@@ -26,7 +26,7 @@ const makeMessageMatrix = (message) => {
   return matrix;
 };
 
-const message = "hello world";
+const message = "Next: Deansgate-Castlefield";
 const messageMatrix = makeMessageMatrix(message);
 
 export const App = () => {
