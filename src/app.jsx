@@ -1,5 +1,5 @@
 import { LedMatrix } from "@app/components/led-matrix";
-import { fontMap } from "@app/font";
+import { fontMap2 as fontMap } from "@app/font";
 import { NUM_VERTICAL_DOTS } from "@app/components/led-matrix";
 
 const appendCharacterToMatrix = (matrix, ch) => {
@@ -11,9 +11,9 @@ const appendCharacterToMatrix = (matrix, ch) => {
   }
 
   matrix.forEach((line, index) => {
-    const characterLine = data.lines[index].slice(data.start, data.end + 1);
+    const characterLine = (data.lines[index] ?? "").slice(data.start, data.end + 1);
     const newLine = line + characterLine;
-    matrix[index]  = newLine;
+    matrix[index] = newLine;
   });
 };
 
@@ -26,12 +26,12 @@ const makeMessageMatrix = (message) => {
   return matrix;
 };
 
-const message = "ABCD";
+const message = "hello world";
 const messageMatrix = makeMessageMatrix(message);
 
 export const App = () => {
   return (
-    <div style={{ height: "30vh" }} >
+    <div style={{ height: "15vh" }} >
       <LedMatrix messageMatrix={messageMatrix} />
     </div>
   )

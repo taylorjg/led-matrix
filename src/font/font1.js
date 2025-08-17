@@ -1,7 +1,8 @@
 import { range } from "@app/utils";
 
 // https://github.com/petykowski/London-Underground-Dot-Matrix-Typeface/blob/master/resources/examples/London-Underground-Medium.png
-export const uppercaseLetters = `
+
+const uppercaseLetters = `
                                                
      xxx     xxxxxxxx      xxxxxx   xxxxxxxx   
      xxx     xxxxxxxxx    xxxxxxxx  xxxxxxxxx  
@@ -17,6 +18,23 @@ export const uppercaseLetters = `
  xx       xx xxxxxxxxx    xxxxxxxx  xxxxxxxxx  
  xx       xx xxxxxxxx      xxxxxx   xxxxxxxx   
                                                `;
+
+const lowercaseLetters = `
+         
+         
+         
+         
+  xxxxxx 
+ xxxxxxxx
+ xx    xx
+       xx
+  xxxxxxx
+ xxxxx xx
+ xx    xx
+ xx    xx
+ xxxxxxxx
+  xxxx xx 
+         `;
 
 const findBreaks = (lines) => {
   const lineLength = lines[0].length;
@@ -44,6 +62,7 @@ const makeCharacterKvps = (characters, line) => {
   });
 };
 
-export const fontMap = new Map([
+export const fontMap1 = new Map([
   ...makeCharacterKvps("ABCD", uppercaseLetters),
+  ...makeCharacterKvps("a", lowercaseLetters),
 ]);
