@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 export const NUM_VERTICAL_DOTS = 11;
 
-export const LedMatrix = ({ messageMatrix }) => {
+export const LedMatrix = ({ messageMatrix, offset = 0 }) => {
   const svgRef = useRef();
   const [dimensions, setDimensions] = useState();
 
@@ -69,7 +69,7 @@ export const LedMatrix = ({ messageMatrix }) => {
     return range(dimensions.numRows).map((row) => (
         range(dimensions.numCols).map((col) => {
           const line = messageMatrix[row] ?? "";
-          const ch = line.at(col);
+          const ch = line.at(col + offset);
           const state = ch === "x";
           return drawLedWithState(row, col, state);
         })
