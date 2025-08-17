@@ -1,25 +1,37 @@
 import { useEffect, useRef, useState } from "react";
 
+const NUM_VERTICAL_DOTS = 11;
+
 export const LedMatrix = () => {
   const svgRef = useRef();
   const [dimensions, setDimensions] = useState();
 
   useEffect(() => {
     if (!dimensions)  {
-      const R = 18;
-      const D = 2 * R
-      const GAP = R / 5;
 
       const rect = svgRef.current.getBoundingClientRect();
-      const numRows = Math.floor(rect.height / (D + GAP));
-      const numCols = Math.floor(rect.width / (D + GAP));
-      const marginX = (rect.width - (numCols * (D + GAP) - GAP)) / 2;
-      const marginY = (rect.height - (numRows * (D + GAP) - GAP)) / 2;
+
+      // g = d / 10
+      // numDots . d + (numDots - 1) . g = h
+      // numDots . d + (numDots - 1) . (d / 10) = h
+      // 10 . numDots . (d / 10) + (numDots - 1) . (d / 10) = h
+      // d = 10 . h / (11 . numDots - 1)
+      const numerator = 10 * rect.height;
+      const denominator = 11 * NUM_VERTICAL_DOTS - 1;
+      const diameter = Math.floor(numerator / denominator);
+
+      const radius = diameter / 2;
+      const gap = diameter / 10;
+
+      const numRows = NUM_VERTICAL_DOTS
+      const numCols = Math.floor(rect.width / (diameter + gap));
+      const marginX = (rect.width - (numCols * (diameter + gap) - gap)) / 2;
+      const marginY = (rect.height - (numRows * (diameter + gap) - gap)) / 2;
 
       setDimensions({
-        radius: R,
-        diameter: D,
-        gap: GAP,
+        radius,
+        diameter,
+        gap,
         numRows,
         numCols,
         marginX,
