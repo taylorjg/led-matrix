@@ -1,4 +1,4 @@
-import { fontMap2 as fontMap } from "@app/font";
+import { fontMap2 as fontMap } from "@app/fonts";
 import { NUM_VERTICAL_DOTS } from "@app/components/led-matrix";
 
 const appendCharacterToMatrix = (matrix, ch) => {

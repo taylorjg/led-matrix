@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { LedMatrix } from "@app/components/led-matrix";
+import { LedMatrix } from "@app/components";
 import { useRequestAnimationFrame } from "@app/hooks";
 import { makeMessageMatrix } from "@app/helpers";
 

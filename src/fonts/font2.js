@@ -72,5 +72,5 @@ export const fontMap2 = new Map([
   ...makeCharacterKvps("ABCDEFGHIJKLMNOPQRSTUVWXYZ", uppercaseLetters),
   ...makeCharacterKvps("abcdefghijklmnopqrstuvwxyz", lowercaseLetters),
   ...makeCharacterKvps("-:", symbols),
-  [" ", { lines: Array(11).fill("    "), start: 0, end: 3 }],
+  [" ", { lines: Array(11).fill("    "), start: 0, end: 1 }],
 ]);
