@@ -8,14 +8,14 @@ export const LedMatrix = ({ messageMatrix, offset = 0 }) => {
   const [dimensions, setDimensions] = useState();
 
   useEffect(() => {
-    if (!dimensions)  {
+    if (!dimensions) {
       const rect = svgRef.current.getBoundingClientRect();
       const numerator = 10 * rect.height;
       const denominator = 11 * NUM_VERTICAL_DOTS - 1;
       const diameter = Math.floor(numerator / denominator);
       const radius = diameter / 2;
       const gap = diameter / 10;
-      const numRows = NUM_VERTICAL_DOTS
+      const numRows = NUM_VERTICAL_DOTS;
       const numCols = Math.floor(rect.width / (diameter + gap));
       const marginX = (rect.width - (numCols * (diameter + gap) - gap)) / 2;
       const marginY = (rect.height - (numRows * (diameter + gap) - gap)) / 2;
@@ -43,7 +43,7 @@ export const LedMatrix = ({ messageMatrix, offset = 0 }) => {
   };
 
   const drawLed = (row, col, fill) => {
-    const key=`led-${row}-${col}`;
+    const key = `led-${row}-${col}`;
     const cx = calculateCx(col);
     const cy = calculateCy(row);
     const r = dimensions.radius;
@@ -66,18 +66,23 @@ export const LedMatrix = ({ messageMatrix, offset = 0 }) => {
   const drawMessageMatrix = () => {
     if (!messageMatrix || !dimensions) return null;
 
-    return range(dimensions.numRows).map((row) => (
-        range(dimensions.numCols).map((col) => {
-          const line = messageMatrix[row] ?? "";
-          const ch = line.at(col + offset);
-          const state = ch === "x";
-          return drawLedWithState(row, col, state);
-        })
-      ));
+    return range(dimensions.numRows).map((row) =>
+      range(dimensions.numCols).map((col) => {
+        const line = messageMatrix[row] ?? "";
+        const ch = line.at(col + offset);
+        const state = ch === "x";
+        return drawLedWithState(row, col, state);
+      })
+    );
   };
 
   return (
-    <svg ref={svgRef} width="100%" height="100%" style={{ backgroundColor: "#888" }}>
+    <svg
+      ref={svgRef}
+      width="100%"
+      height="100%"
+      style={{ backgroundColor: "#888" }}
+    >
       {drawMessageMatrix()}
     </svg>
   );

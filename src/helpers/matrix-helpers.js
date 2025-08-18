@@ -10,7 +10,10 @@ const appendCharacterToMatrix = (matrix, ch) => {
   }
 
   matrix.forEach((line, index) => {
-    const characterLine = (data.lines[index] ?? "").slice(data.start, data.end + 1);
+    const characterLine = (data.lines[index] ?? "").slice(
+      data.start,
+      data.end + 1
+    );
     const newLine = line + characterLine;
     matrix[index] = newLine;
   });

@@ -19,8 +19,8 @@ export const App = () => {
   useRequestAnimationFrame(callback, 200);
 
   return (
-    <div style={{ height: "10vh" }} >
+    <div style={{ height: "10vh" }}>
       <LedMatrix messageMatrix={messageMatrix} offset={offset} />
     </div>
-  )
+  );
 };
