@@ -7,26 +7,30 @@ import {
   Slider,
   TextField,
 } from "@mui/material";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
 import { LedMatrix } from "@app/components";
 import { useRequestAnimationFrame } from "@app/hooks";
 import { makeMessageMatrix } from "@app/helpers";
+import { StyledLedMatrixWrapper } from "./app.styles";
 
 const DEFAULT_MESSAGE = "Next: Deansgate-Castlefield";
 
 export const App = () => {
-  const [offset, setOffset] = useState(0);
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
   const [scrollSpeed, setScrollSpeed] = useState(50);
+  const [scrollingEnabled, setScrollingEnabled] = useState(false);
+
+  // TODO: move these inside the LedMatrix component
+  const [offset, setOffset] = useState(0);
   const [messageMatrix, setMessageMatrix] = useState(["".repeat(11)]);
 
   useEffect(() => {
-    console.log("[App]", "useEffect for message");
     setMessageMatrix(makeMessageMatrix(message));
   }, [message]);
 
-  const onChangeMessage = (event, value) => {
-    console.log("[App] onChangeMessage", value);
+  const onChangeMessage = (event) => {
     setMessage(event.target.value);
   };
 
@@ -49,9 +53,10 @@ export const App = () => {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <div style={{ height: "10vh" }}>
+      <StyledLedMatrixWrapper>
         <LedMatrix messageMatrix={messageMatrix} offset={offset} />
-      </div>
+      </StyledLedMatrixWrapper>
+
       <Box
         component="form"
         sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 4 }}
@@ -66,6 +71,7 @@ export const App = () => {
             fullWidth
           />
         </FormControl>
+
         <FormControl>
           <FormLabel htmlFor="scrollSpeed">Scroll Speed (ms)</FormLabel>
           <Slider
@@ -75,10 +81,22 @@ export const App = () => {
             onChange={onChangeScrollSpeed}
             valueLabelDisplay="auto"
             min={0}
-            max={500}
+            max={250}
             step={10}
           />
         </FormControl>
+
+        {scrollingEnabled ? (
+          <PauseCircleIcon
+            fontSize="large"
+            onClick={() => setScrollingEnabled(false)}
+          />
+        ) : (
+          <PlayCircleIcon
+            fontSize="large"
+            onClick={() => setScrollingEnabled(true)}
+          />
+        )}
       </Box>
     </Container>
   );
