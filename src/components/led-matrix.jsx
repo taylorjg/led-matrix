@@ -66,7 +66,7 @@ export const LedMatrix = ({ messageMatrix, offset = 0 }) => {
   const drawMessageMatrix = () => {
     if (!messageMatrix || !dimensions) return null;
 
-    return range(dimensions.numRows).map((row) =>
+    return range(dimensions.numRows).flatMap((row) =>
       range(dimensions.numCols).map((col) => {
         const line = messageMatrix[row] ?? "";
         const ch = line.at(col + offset);
@@ -77,12 +77,7 @@ export const LedMatrix = ({ messageMatrix, offset = 0 }) => {
   };
 
   return (
-    <svg
-      ref={svgRef}
-      width="100%"
-      height="100%"
-      style={{ backgroundColor: "#888" }}
-    >
+    <svg ref={svgRef} width="100%" height="100%">
       {drawMessageMatrix()}
     </svg>
   );
