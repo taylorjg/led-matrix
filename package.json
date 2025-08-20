@@ -8,7 +8,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist",
+    "predeploy": "npm run build",
+    "open": "open https://taylorjg.github.io/led-matrix"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
