@@ -7,6 +7,8 @@ import {
   Slider,
   TextField,
 } from "@mui/material";
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
@@ -16,11 +18,13 @@ import { makeMessageMatrix } from "@app/helpers";
 import { StyledLedMatrixWrapper } from "./app.styles";
 
 const DEFAULT_MESSAGE = "Next: Deansgate-Castlefield";
+const GAP = 2;
 
 export const App = () => {
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
-  const [scrollSpeed, setScrollSpeed] = useState(50);
+  const [scrollSpeed, setScrollSpeed] = useState(Math.ceil((1000 / 60) * 2));
   const [scrollingEnabled, setScrollingEnabled] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // TODO: move these inside the LedMatrix component
   const [offset, setOffset] = useState(0);
@@ -38,9 +42,21 @@ export const App = () => {
     setScrollSpeed(value);
   };
 
+  const onFullscreen = () => {
+    document.documentElement.requestFullscreen().then(() => {
+      setIsFullscreen(true);
+    });
+  };
+
+  const onFullscreenExit = () => {
+    document.exitFullscreen().then(() => {
+      setIsFullscreen(false);
+    });
+  };
+
   const callback = useCallback(
-    (elapsed) => {
-      console.log("[requestAnimationFrame callback]", elapsed);
+    (/* elapsed */) => {
+      // console.log("[requestAnimationFrame callback]", elapsed);
       setOffset((value) => {
         const newValue = value + 1;
         return newValue < messageMatrix[0].length ? newValue : 0;
@@ -53,50 +69,63 @@ export const App = () => {
 
   return (
     <>
-      <Container sx={{ mt: 4 }}>
+      <Container sx={{ mt: GAP }}>
         <StyledLedMatrixWrapper>
           <LedMatrix messageMatrix={messageMatrix} offset={offset} />
         </StyledLedMatrixWrapper>
 
         <Box
           component="form"
-          sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 4 }}
+          sx={{
+            mt: GAP,
+            display: "flex",
+            flexDirection: "column",
+            gap: GAP * 2,
+          }}
         >
-          <FormControl>
-            <FormLabel htmlFor="message">Message</FormLabel>
-            <TextField
-              name="message"
-              variant="standard"
-              value={message}
-              onChange={onChangeMessage}
-              fullWidth
-            />
-          </FormControl>
-
-          <FormControl>
-            <FormLabel htmlFor="scrollSpeed">Scroll Speed (ms)</FormLabel>
-            <Slider
-              name="scrollSpeed"
-              sx={{ width: 300 }}
-              value={scrollSpeed}
-              onChange={onChangeScrollSpeed}
-              valueLabelDisplay="auto"
-              min={0}
-              max={250}
-              step={10}
-            />
-          </FormControl>
-
-          {scrollingEnabled ? (
-            <PauseCircleIcon
-              fontSize="large"
-              onClick={() => setScrollingEnabled(false)}
-            />
+          {isFullscreen ? (
+            <FullscreenExitIcon fontSize="large" onClick={onFullscreenExit} />
           ) : (
-            <PlayCircleIcon
-              fontSize="large"
-              onClick={() => setScrollingEnabled(true)}
-            />
+            <>
+              <FormControl>
+                <FormLabel htmlFor="message">Message</FormLabel>
+                <TextField
+                  name="message"
+                  variant="standard"
+                  value={message}
+                  onChange={onChangeMessage}
+                  fullWidth
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel htmlFor="scrollSpeed">Scroll Speed (ms)</FormLabel>
+                <Slider
+                  name="scrollSpeed"
+                  sx={{ width: 300 }}
+                  value={scrollSpeed}
+                  onChange={onChangeScrollSpeed}
+                  valueLabelDisplay="auto"
+                  min={0}
+                  max={250}
+                />
+              </FormControl>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                {scrollingEnabled ? (
+                  <PauseCircleIcon
+                    fontSize="large"
+                    onClick={() => setScrollingEnabled(false)}
+                  />
+                ) : (
+                  <PlayCircleIcon
+                    fontSize="large"
+                    onClick={() => setScrollingEnabled(true)}
+                  />
+                )}
+
+                <FullscreenIcon fontSize="large" onClick={onFullscreen} />
+              </div>
+            </>
           )}
         </Box>
       </Container>
