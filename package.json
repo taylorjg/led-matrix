@@ -2,7 +2,7 @@
   "name": "led-matrix",
   "description": "LED matrix display with React",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
