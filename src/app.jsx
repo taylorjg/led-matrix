@@ -10,7 +10,7 @@ import {
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
-import { LedMatrix } from "@app/components";
+import { LedMatrix, Version } from "@app/components";
 import { useRequestAnimationFrame } from "@app/hooks";
 import { makeMessageMatrix } from "@app/helpers";
 import { StyledLedMatrixWrapper } from "./app.styles";
@@ -52,52 +52,55 @@ export const App = () => {
   useRequestAnimationFrame(callback, scrollSpeed);
 
   return (
-    <Container sx={{ mt: 4 }}>
-      <StyledLedMatrixWrapper>
-        <LedMatrix messageMatrix={messageMatrix} offset={offset} />
-      </StyledLedMatrixWrapper>
+    <>
+      <Container sx={{ mt: 4 }}>
+        <StyledLedMatrixWrapper>
+          <LedMatrix messageMatrix={messageMatrix} offset={offset} />
+        </StyledLedMatrixWrapper>
 
-      <Box
-        component="form"
-        sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 4 }}
-      >
-        <FormControl>
-          <FormLabel htmlFor="message">Message</FormLabel>
-          <TextField
-            name="message"
-            variant="standard"
-            value={message}
-            onChange={onChangeMessage}
-            fullWidth
-          />
-        </FormControl>
+        <Box
+          component="form"
+          sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 4 }}
+        >
+          <FormControl>
+            <FormLabel htmlFor="message">Message</FormLabel>
+            <TextField
+              name="message"
+              variant="standard"
+              value={message}
+              onChange={onChangeMessage}
+              fullWidth
+            />
+          </FormControl>
 
-        <FormControl>
-          <FormLabel htmlFor="scrollSpeed">Scroll Speed (ms)</FormLabel>
-          <Slider
-            name="scrollSpeed"
-            sx={{ width: 300 }}
-            value={scrollSpeed}
-            onChange={onChangeScrollSpeed}
-            valueLabelDisplay="auto"
-            min={0}
-            max={250}
-            step={10}
-          />
-        </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="scrollSpeed">Scroll Speed (ms)</FormLabel>
+            <Slider
+              name="scrollSpeed"
+              sx={{ width: 300 }}
+              value={scrollSpeed}
+              onChange={onChangeScrollSpeed}
+              valueLabelDisplay="auto"
+              min={0}
+              max={250}
+              step={10}
+            />
+          </FormControl>
 
-        {scrollingEnabled ? (
-          <PauseCircleIcon
-            fontSize="large"
-            onClick={() => setScrollingEnabled(false)}
-          />
-        ) : (
-          <PlayCircleIcon
-            fontSize="large"
-            onClick={() => setScrollingEnabled(true)}
-          />
-        )}
-      </Box>
-    </Container>
+          {scrollingEnabled ? (
+            <PauseCircleIcon
+              fontSize="large"
+              onClick={() => setScrollingEnabled(false)}
+            />
+          ) : (
+            <PlayCircleIcon
+              fontSize="large"
+              onClick={() => setScrollingEnabled(true)}
+            />
+          )}
+        </Box>
+      </Container>
+      <Version />
+    </>
   );
 };
