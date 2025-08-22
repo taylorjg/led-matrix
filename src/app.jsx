@@ -22,12 +22,12 @@ const GAP = 2;
 
 export const App = () => {
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
-  const [scrollSpeed, setScrollSpeed] = useState(Math.ceil((1000 / 60) * 2));
+  const [scrollSpeed, setScrollSpeed] = useState(100);
   const [scrollingEnabled, setScrollingEnabled] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // TODO: move these inside the LedMatrix component
-  const [offset, setOffset] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
   const [messageMatrix, setMessageMatrix] = useState(["".repeat(11)]);
 
   useEffect(() => {
@@ -54,16 +54,10 @@ export const App = () => {
     });
   };
 
-  const callback = useCallback(
-    (/* elapsed */) => {
-      // console.log("[requestAnimationFrame callback]", elapsed);
-      setOffset((value) => {
-        const newValue = value + 1;
-        return newValue < messageMatrix[0].length ? newValue : 0;
-      });
-    },
-    [messageMatrix]
-  );
+  const callback = useCallback((elapsed) => {
+    console.log("[requestAnimationFrame callback]", elapsed);
+    setElapsed(elapsed);
+  }, []);
 
   useRequestAnimationFrame(callback, scrollSpeed);
 
@@ -71,7 +65,11 @@ export const App = () => {
     <>
       <Container sx={{ mt: GAP }}>
         <StyledLedMatrixWrapper>
-          <LedMatrix messageMatrix={messageMatrix} offset={offset} />
+          <LedMatrix
+            messageMatrix={messageMatrix}
+            elapsed={elapsed}
+            scrollSpeed={scrollSpeed}
+          />
         </StyledLedMatrixWrapper>
 
         <Box

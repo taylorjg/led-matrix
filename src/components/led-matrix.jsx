@@ -3,9 +3,11 @@ import { useEffect, useRef, useState } from "react";
 
 export const NUM_VERTICAL_DOTS = 11;
 
-export const LedMatrix = ({ messageMatrix, offset = 0 }) => {
+export const LedMatrix = ({ messageMatrix, elapsed, scrollSpeed }) => {
   const svgRef = useRef();
   const [dimensions, setDimensions] = useState();
+  const translateXRef = useRef(0);
+  const [circles, setCircles] = useState([]);
 
   useEffect(() => {
     if (!dimensions) {
@@ -32,53 +34,90 @@ export const LedMatrix = ({ messageMatrix, offset = 0 }) => {
     }
   }, [dimensions]);
 
-  const calculateCx = (col) => {
-    const { radius, diameter, gap, marginX } = dimensions;
-    return marginX + col * (diameter + gap) + radius;
-  };
+  useEffect(() => {
+    if (!messageMatrix || !dimensions) return;
 
-  const calculateCy = (row) => {
-    const { radius, diameter, gap, marginY } = dimensions;
-    return marginY + row * (diameter + gap) + radius;
-  };
+    const calculateCx = (col) => {
+      const { radius, diameter, gap, marginX } = dimensions;
+      return marginX + col * (diameter + gap) + radius;
+    };
 
-  const drawLed = (row, col, fill) => {
-    const key = `led-${row}-${col}`;
-    const cx = calculateCx(col);
-    const cy = calculateCy(row);
-    const r = dimensions.radius;
+    const calculateCy = (row) => {
+      const { radius, diameter, gap, marginY } = dimensions;
+      return marginY + row * (diameter + gap) + radius;
+    };
 
-    return <circle key={key} cx={cx} cy={cy} r={r} fill={fill} />;
-  };
+    const drawLed = (row, col, fill) => {
+      const key = `led-${row}-${col}`;
+      const cx = calculateCx(col);
+      const cy = calculateCy(row);
+      const r = dimensions.radius;
 
-  const drawLedOn = (row, col) => {
-    return drawLed(row, col, "#ff0");
-  };
+      return <circle key={key} cx={cx} cy={cy} r={r} fill={fill} />;
+    };
 
-  const drawLedOff = (row, col) => {
-    return drawLed(row, col, "#000");
-  };
+    const drawLedOn = (row, col) => {
+      return drawLed(row, col, "#ff0");
+    };
 
-  const drawLedWithState = (row, col, state) => {
-    return state ? drawLedOn(row, col) : drawLedOff(row, col);
-  };
+    const drawLedOff = (row, col) => {
+      return drawLed(row, col, "#000");
+    };
 
-  const drawMessageMatrix = () => {
-    if (!messageMatrix || !dimensions) return null;
+    const drawLedWithState = (row, col, state) => {
+      return state ? drawLedOn(row, col) : drawLedOff(row, col);
+    };
 
-    return range(dimensions.numRows).flatMap((row) =>
-      range(dimensions.numCols).map((col) => {
+    const drawOffLeds = (colOffset) => {
+      const numRows = dimensions.numRows;
+      const numCols = dimensions.numCols;
+
+      return range(numRows).flatMap((row) => {
+        return range(numCols).map((col) => {
+          return drawLedOff(row, col + colOffset);
+        });
+      });
+    };
+
+    const drawMessageMatrix = (colOffset) => {
+      const numRows = dimensions.numRows;
+      const numCols = Math.max(dimensions.numCols, messageMatrix[0].length);
+
+      return range(numRows).flatMap((row) => {
         const line = messageMatrix[row] ?? "";
-        const ch = line.at(col + offset);
-        const state = ch === "x";
-        return drawLedWithState(row, col, state);
-      })
-    );
-  };
+
+        return range(numCols).map((col) => {
+          const ch = line.at(col);
+          const state = ch === "x";
+
+          return drawLedWithState(row, col + colOffset, state);
+        });
+      });
+    };
+
+    console.log("[LedMatrix] re-creating the circles");
+    const circles1 = drawOffLeds(0);
+    const circles2 = drawMessageMatrix(dimensions.numCols);
+    const circles3 = drawOffLeds(dimensions.numCols + messageMatrix[0].length);
+    const allCircles = [...circles1, ...circles2, ...circles3];
+    setCircles(allCircles);
+  }, [messageMatrix, dimensions]);
+
+  if (messageMatrix && dimensions) {
+    const colWidth = dimensions.diameter + dimensions.gap;
+    const numCols = dimensions.numCols + messageMatrix[0].length;
+    const totalMessageWidth = numCols * colWidth - dimensions.gap;
+
+    translateXRef.current -= (elapsed / scrollSpeed) * colWidth;
+
+    if (translateXRef.current < -totalMessageWidth) {
+      translateXRef.current = 0;
+    }
+  }
 
   return (
     <svg ref={svgRef} width="100%" height="100%">
-      {drawMessageMatrix()}
+      <g transform={`translate(${translateXRef.current})`}>{circles}</g>
     </svg>
   );
 };
