@@ -34,6 +34,18 @@ export const App = () => {
     setMessageMatrix(makeMessageMatrix(message));
   }, [message]);
 
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+    };
+  }, []);
+
   const onChangeMessage = (event) => {
     setMessage(event.target.value);
   };
@@ -43,15 +55,11 @@ export const App = () => {
   };
 
   const onFullscreen = () => {
-    document.documentElement.requestFullscreen().then(() => {
-      setIsFullscreen(true);
-    });
+    document.documentElement.requestFullscreen();
   };
 
   const onFullscreenExit = () => {
-    document.exitFullscreen().then(() => {
-      setIsFullscreen(false);
-    });
+    document.exitFullscreen();
   };
 
   const callback = useCallback((elapsed) => {
@@ -72,60 +80,72 @@ export const App = () => {
           />
         </StyledLedMatrixWrapper>
 
-        <Box
-          component="form"
-          sx={{
-            mt: GAP,
-            display: "flex",
-            flexDirection: "column",
-            gap: GAP * 2,
-          }}
-        >
-          {isFullscreen ? (
-            <FullscreenExitIcon fontSize="large" onClick={onFullscreenExit} />
-          ) : (
-            <>
-              <FormControl>
-                <FormLabel htmlFor="message">Message</FormLabel>
-                <TextField
-                  name="message"
-                  variant="standard"
-                  value={message}
-                  onChange={onChangeMessage}
-                  fullWidth
-                />
-              </FormControl>
+        {isFullscreen ? (
+          <FullscreenExitIcon
+            onClick={onFullscreenExit}
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              bottom: `0.5rem`,
+              left: `0.5rem`,
+            }}
+          />
+        ) : (
+          <Box
+            component="form"
+            sx={{
+              mt: GAP,
+              display: "flex",
+              flexDirection: "column",
+              gap: GAP * 2,
+            }}
+          >
+            <FormControl>
+              <FormLabel htmlFor="message">Message</FormLabel>
+              <TextField
+                name="message"
+                variant="standard"
+                value={message}
+                onChange={onChangeMessage}
+                fullWidth
+              />
+            </FormControl>
 
-              <FormControl>
-                <FormLabel htmlFor="scrollSpeed">Scroll Speed (ms)</FormLabel>
-                <Slider
-                  name="scrollSpeed"
-                  sx={{ width: 300 }}
-                  value={scrollSpeed}
-                  onChange={onChangeScrollSpeed}
-                  valueLabelDisplay="auto"
-                  min={0}
-                  max={250}
+            <FormControl>
+              <FormLabel htmlFor="scrollSpeed">Scroll Speed (ms)</FormLabel>
+              <Slider
+                name="scrollSpeed"
+                sx={{ width: 300 }}
+                value={scrollSpeed}
+                onChange={onChangeScrollSpeed}
+                valueLabelDisplay="auto"
+                min={0}
+                max={250}
+              />
+            </FormControl>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              {scrollingEnabled ? (
+                <PauseCircleIcon
+                  fontSize="large"
+                  onClick={() => setScrollingEnabled(false)}
+                  style={{ cursor: "pointer" }}
                 />
-              </FormControl>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                {scrollingEnabled ? (
-                  <PauseCircleIcon
-                    fontSize="large"
-                    onClick={() => setScrollingEnabled(false)}
-                  />
-                ) : (
-                  <PlayCircleIcon
-                    fontSize="large"
-                    onClick={() => setScrollingEnabled(true)}
-                  />
-                )}
+              ) : (
+                <PlayCircleIcon
+                  fontSize="large"
+                  onClick={() => setScrollingEnabled(true)}
+                  style={{ cursor: "pointer" }}
+                />
+              )}
 
-                <FullscreenIcon fontSize="large" onClick={onFullscreen} />
-              </div>
-            </>
-          )}
-        </Box>
+              <FullscreenIcon
+                fontSize="large"
+                onClick={onFullscreen}
+                style={{ cursor: "pointer" }}
+              />
+            </div>
+          </Box>
+        )}
       </Container>
       <Version />
     </>
