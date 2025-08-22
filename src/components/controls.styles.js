@@ -6,7 +6,7 @@ export const StyledBox = styled(Box)`
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 2rem;
 `;
 
 export const StyledIcons = styled.div`
