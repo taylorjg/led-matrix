@@ -35,6 +35,52 @@ export const LedMatrix = ({ messageMatrix, elapsed, scrollSpeed }) => {
   }, [dimensions]);
 
   useEffect(() => {
+    const recalculateDimensions = () => {
+      const rect = svgRef.current.getBoundingClientRect();
+      const numerator = 10 * rect.height;
+      const denominator = 11 * NUM_VERTICAL_DOTS - 1;
+      const diameter = Math.floor(numerator / denominator);
+      const radius = diameter / 2;
+      const gap = diameter / 10;
+      const numRows = NUM_VERTICAL_DOTS;
+      const numCols = Math.floor(rect.width / (diameter + gap));
+      const marginX = (rect.width - (numCols * (diameter + gap) - gap)) / 2;
+      const marginY = (rect.height - (numRows * (diameter + gap) - gap)) / 2;
+
+      setDimensions({
+        radius,
+        diameter,
+        gap,
+        numRows,
+        numCols,
+        marginX,
+        marginY,
+      });
+    };
+
+    const onResize = () => {
+      console.log(`[LedMatrix] onResize`);
+      recalculateDimensions();
+    };
+
+    const onScreenOrientationChange = () => {
+      console.log(`[LedMatrix] onScreenOrientationChange`);
+      recalculateDimensions();
+    };
+
+    window.addEventListener("resize", onResize);
+    screen.orientation?.addEventListener("change", onScreenOrientationChange);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      screen.orientation?.removeEventListener(
+        "change",
+        onScreenOrientationChange
+      );
+    };
+  }, []);
+
+  useEffect(() => {
     if (!messageMatrix || !dimensions) return;
 
     const calculateCx = (col) => {
