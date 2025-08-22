@@ -114,53 +114,50 @@ export const App = () => {
               />
             </FormControl>
 
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <FormControl>
-                <FormLabel htmlFor="scrollSpeed">Scroll Speed (ms)</FormLabel>
-                <Slider
-                  name="scrollSpeed"
-                  sx={{ width: 300 }}
-                  value={scrollSpeed}
-                  onChange={onChangeScrollSpeed}
-                  valueLabelDisplay="auto"
-                  min={0}
-                  max={250}
-                />
-              </FormControl>
-              <div
-                style={{
-                  marginLeft: "8rem",
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                {scrollingEnabled ? (
-                  <Tooltip title="Pause scrolling">
-                    <PauseCircleIcon
-                      fontSize="large"
-                      onClick={() => setScrollingEnabled(false)}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="Resume scrolling">
-                    <PlayCircleIcon
-                      fontSize="large"
-                      onClick={() => setScrollingEnabled(true)}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Tooltip>
-                )}
-                <Tooltip title="Enter fullscreen">
-                  <FullscreenIcon
+            <FormControl>
+              <FormLabel htmlFor="scrollSpeed">Scroll Speed (ms)</FormLabel>
+              <Slider
+                name="scrollSpeed"
+                sx={{ width: 300 }}
+                value={scrollSpeed}
+                onChange={onChangeScrollSpeed}
+                valueLabelDisplay="auto"
+                min={0}
+                max={250}
+              />
+            </FormControl>
+            <div
+              style={{
+                marginTop: "-1rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              {scrollingEnabled ? (
+                <Tooltip title="Pause scrolling">
+                  <PauseCircleIcon
                     fontSize="large"
-                    onClick={onFullscreen}
+                    onClick={() => setScrollingEnabled(false)}
                     style={{ cursor: "pointer" }}
                   />
                 </Tooltip>
-              </div>
+              ) : (
+                <Tooltip title="Resume scrolling">
+                  <PlayCircleIcon
+                    fontSize="large"
+                    onClick={() => setScrollingEnabled(true)}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Tooltip>
+              )}
+              <Tooltip title="Enter fullscreen">
+                <FullscreenIcon
+                  fontSize="large"
+                  onClick={onFullscreen}
+                  style={{ cursor: "pointer" }}
+                />
+              </Tooltip>
             </div>
           </Box>
         )}
