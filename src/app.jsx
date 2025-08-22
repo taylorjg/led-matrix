@@ -11,7 +11,7 @@ const DEFAULT_MESSAGE = "Next: Deansgate-Castlefield";
 
 export const App = () => {
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
-  const [scrollSpeed, setScrollSpeed] = useState(100);
+  const [scrollSpeed, setScrollSpeed] = useState(Math.round((1000 / 60) * 5));
   const [scrollingEnabled, setScrollingEnabled] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -53,7 +53,11 @@ export const App = () => {
   return (
     <Container sx={{ mt: 2 }}>
       <StyledLedMatrixWrapper>
-        <LedMatrix messageMatrix={messageMatrix} scrollSpeed={scrollSpeed} />
+        <LedMatrix
+          messageMatrix={messageMatrix}
+          scrollSpeed={scrollSpeed}
+          scrollingEnabled={scrollingEnabled}
+        />
       </StyledLedMatrixWrapper>
 
       {isFullscreen ? (

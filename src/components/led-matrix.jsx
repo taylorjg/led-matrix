@@ -1,13 +1,13 @@
-import { range } from "@app/utils";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useRequestAnimationFrame } from "@app/hooks";
+import { range } from "@app/utils";
 
 export const NUM_VERTICAL_DOTS = 11;
 
-export const LedMatrix = ({ messageMatrix, scrollSpeed }) => {
+export const LedMatrix = ({ messageMatrix, scrollSpeed, scrollingEnabled }) => {
   const [dimensions, setDimensions] = useState();
-  const [circles, setCircles] = useState([]);
+  const [leds, setLeds] = useState([]);
   const [elapsed, setElapsed] = useState(0);
 
   const svgRef = useRef();
@@ -111,9 +111,9 @@ export const LedMatrix = ({ messageMatrix, scrollSpeed }) => {
       });
     };
 
-    const drawMessageMatrix = (colOffset) => {
+    const drawMessageLeds = (colOffset, numMessageCols) => {
       const numRows = dimensions.numRows;
-      const numCols = Math.max(dimensions.numCols, messageMatrix[0].length);
+      const numCols = numMessageCols;
 
       return range(numRows).flatMap((row) => {
         const line = messageMatrix[row] ?? "";
@@ -127,13 +127,16 @@ export const LedMatrix = ({ messageMatrix, scrollSpeed }) => {
       });
     };
 
-    console.log("[LedMatrix] re-creating the circles");
-    const circles1 = drawOffLeds(0);
-    const circles2 = drawMessageMatrix(dimensions.numCols);
-    const circles3 = drawOffLeds(dimensions.numCols + messageMatrix[0].length);
-    const allCircles = [...circles1, ...circles2, ...circles3];
-    setCircles(allCircles);
+    console.log("[LedMatrix] re-creating the LEDs");
+    const numMessageCols = messageMatrix[0].length;
+    const offLeds1 = drawOffLeds(0);
+    const messageLeds = drawMessageLeds(dimensions.numCols, numMessageCols);
+    const offLeds2 = drawOffLeds(dimensions.numCols + numMessageCols);
+    const allLeds = [...offLeds1, ...messageLeds, ...offLeds2];
+    setLeds(allLeds);
   }, [messageMatrix, dimensions]);
+
+  useRequestAnimationFrame(setElapsed, scrollSpeed, scrollingEnabled);
 
   if (messageMatrix && dimensions) {
     const colWidth = dimensions.diameter + dimensions.gap;
@@ -147,16 +150,9 @@ export const LedMatrix = ({ messageMatrix, scrollSpeed }) => {
     }
   }
 
-  const callback = useCallback((elapsed) => {
-    // console.log("[requestAnimationFrame callback]", elapsed);
-    setElapsed(elapsed);
-  }, []);
-
-  useRequestAnimationFrame(callback, scrollSpeed);
-
   return (
     <svg ref={svgRef} width="100%" height="100%">
-      <g transform={`translate(${translateXRef.current})`}>{circles}</g>
+      <g transform={`translate(${translateXRef.current})`}>{leds}</g>
     </svg>
   );
 };

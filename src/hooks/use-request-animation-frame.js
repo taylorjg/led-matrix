@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 
-export const useRequestAnimationFrame = (callback, ms = 0) => {
-  const rafIdRef = useRef();
+export const useRequestAnimationFrame = (callback, ms, enabled) => {
+  const rafIdRef = useRef(null);
 
   useEffect(() => {
-    console.log("[useRequestAnimationFrame]", "useEffect for callback & ms");
-    let lastTimestamp = 0;
+    console.log("[useRequestAnimationFrame]", "useEffect for callback");
+    let lastTimestamp;
 
     const step = (timestamp) => {
       const delta = timestamp - lastTimestamp;
@@ -15,10 +15,17 @@ export const useRequestAnimationFrame = (callback, ms = 0) => {
         callback(delta);
       }
 
-      rafIdRef.current = requestAnimationFrame(step);
+      if (enabled) {
+        rafIdRef.current = requestAnimationFrame(step);
+      } else {
+        rafIdRef.current = null;
+      }
     };
 
-    rafIdRef.current = requestAnimationFrame(step);
+    if (enabled) {
+      rafIdRef.current = requestAnimationFrame(step);
+      lastTimestamp = performance.now();
+    }
 
     return () => {
       console.log(
@@ -27,6 +34,7 @@ export const useRequestAnimationFrame = (callback, ms = 0) => {
         rafIdRef.current
       );
       cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = null;
     };
-  }, [callback, ms]);
+  }, [callback, ms, enabled]);
 };
