@@ -1,25 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-  Box,
-  Container,
-  FormControl,
-  FormLabel,
-  Slider,
-  TextField,
-  Tooltip,
-} from "@mui/material";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import { Container, Tooltip } from "@mui/material";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
-import PauseCircleIcon from "@mui/icons-material/PauseCircle";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
-import { LedMatrix, Version } from "@app/components";
+import { Controls, LedMatrix, Version } from "@app/components";
 import { useRequestAnimationFrame } from "@app/hooks";
 import { makeMessageMatrix } from "@app/helpers";
+
 import { StyledLedMatrixWrapper } from "./app.styles";
 
 const DEFAULT_MESSAGE = "Next: Deansgate-Castlefield";
-const GAP = 2;
 
 export const App = () => {
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
@@ -55,11 +44,11 @@ export const App = () => {
     setScrollSpeed(value);
   };
 
-  const onFullscreen = () => {
+  const onEnterFullscreen = () => {
     document.documentElement.requestFullscreen();
   };
 
-  const onFullscreenExit = () => {
+  const onExitFullscreen = () => {
     document.exitFullscreen();
   };
 
@@ -72,7 +61,7 @@ export const App = () => {
 
   return (
     <>
-      <Container sx={{ mt: GAP }}>
+      <Container sx={{ mt: 2 }}>
         <StyledLedMatrixWrapper>
           <LedMatrix
             messageMatrix={messageMatrix}
@@ -84,7 +73,7 @@ export const App = () => {
         {isFullscreen ? (
           <Tooltip title="Exit fullscreen">
             <FullscreenExitIcon
-              onClick={onFullscreenExit}
+              onClick={onExitFullscreen}
               style={{
                 cursor: "pointer",
                 position: "fixed",
@@ -94,72 +83,15 @@ export const App = () => {
             />
           </Tooltip>
         ) : (
-          <Box
-            component="form"
-            sx={{
-              mt: GAP,
-              display: "flex",
-              flexDirection: "column",
-              gap: GAP * 2,
-            }}
-          >
-            <FormControl>
-              <FormLabel htmlFor="message">Message</FormLabel>
-              <TextField
-                name="message"
-                variant="standard"
-                value={message}
-                onChange={onChangeMessage}
-                fullWidth
-              />
-            </FormControl>
-
-            <FormControl>
-              <FormLabel htmlFor="scrollSpeed">Scroll Speed (ms)</FormLabel>
-              <Slider
-                name="scrollSpeed"
-                sx={{ width: 300 }}
-                value={scrollSpeed}
-                onChange={onChangeScrollSpeed}
-                valueLabelDisplay="auto"
-                min={0}
-                max={250}
-              />
-            </FormControl>
-            <div
-              style={{
-                marginTop: "-1rem",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              {scrollingEnabled ? (
-                <Tooltip title="Pause scrolling">
-                  <PauseCircleIcon
-                    fontSize="large"
-                    onClick={() => setScrollingEnabled(false)}
-                    style={{ cursor: "pointer" }}
-                  />
-                </Tooltip>
-              ) : (
-                <Tooltip title="Resume scrolling">
-                  <PlayCircleIcon
-                    fontSize="large"
-                    onClick={() => setScrollingEnabled(true)}
-                    style={{ cursor: "pointer" }}
-                  />
-                </Tooltip>
-              )}
-              <Tooltip title="Enter fullscreen">
-                <FullscreenIcon
-                  fontSize="large"
-                  onClick={onFullscreen}
-                  style={{ cursor: "pointer" }}
-                />
-              </Tooltip>
-            </div>
-          </Box>
+          <Controls
+            message={message}
+            onChangeMessage={onChangeMessage}
+            scrollSpeed={scrollSpeed}
+            onChangeScrollSpeed={onChangeScrollSpeed}
+            scrollingEnabled={scrollingEnabled}
+            setScrollingEnabled={setScrollingEnabled}
+            onEnterFullscreen={onEnterFullscreen}
+          />
         )}
       </Container>
       <Version />

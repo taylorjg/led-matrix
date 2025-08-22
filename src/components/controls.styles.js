@@ -1,0 +1,17 @@
+import styled from "@emotion/styled";
+
+import { Box } from "@mui/material";
+
+export const StyledBox = styled(Box)`
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+`;
+
+export const StyledIcons = styled.div`
+  margin-top: -1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
