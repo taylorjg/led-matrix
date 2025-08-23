@@ -7,7 +7,7 @@ const DEFAULT_MESSAGE = "Next: Deansgate-Castlefield";
 
 export const App = () => {
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
-  const [scrollSpeed, setScrollSpeed] = useState(Math.round((1000 / 60) * 5));
+  const [scrollSpeed, setScrollSpeed] = useState(15);
   const [scrollingEnabled, setScrollingEnabled] = useState(false);
   const { isFullscreen, enterFullscreen, exitFullscreen } = useFullscreen();
 
