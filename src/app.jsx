@@ -3,7 +3,6 @@ import { Container, Tooltip } from "@mui/material";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 
 import { Controls, LedMatrix, Version } from "@app/components";
-import { makeMessageMatrix } from "@app/helpers";
 
 import { StyledLedMatrixWrapper } from "./app.styles";
 
@@ -14,13 +13,6 @@ export const App = () => {
   const [scrollSpeed, setScrollSpeed] = useState(Math.round((1000 / 60) * 5));
   const [scrollingEnabled, setScrollingEnabled] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-
-  // TODO: move messageMatrix inside <LedMatrix />
-  const [messageMatrix, setMessageMatrix] = useState(["".repeat(11)]);
-
-  useEffect(() => {
-    setMessageMatrix(makeMessageMatrix(message));
-  }, [message]);
 
   useEffect(() => {
     const onFullscreenChange = () => {
@@ -54,7 +46,7 @@ export const App = () => {
     <Container sx={{ mt: 2 }}>
       <StyledLedMatrixWrapper>
         <LedMatrix
-          messageMatrix={messageMatrix}
+          message={message}
           scrollSpeed={scrollSpeed}
           scrollingEnabled={scrollingEnabled}
         />

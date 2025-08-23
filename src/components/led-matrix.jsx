@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
 import { useRequestAnimationFrame } from "@app/hooks";
+import { makeMessageMatrix } from "@app/helpers";
 import { range } from "@app/utils";
 
 export const NUM_VERTICAL_DOTS = 11;
 
-export const LedMatrix = ({ messageMatrix, scrollSpeed, scrollingEnabled }) => {
+export const LedMatrix = ({ message, scrollSpeed, scrollingEnabled }) => {
   const [dimensions, setDimensions] = useState();
   const [leds, setLeds] = useState([]);
   const [elapsed, setElapsed] = useState(0);
@@ -65,6 +66,12 @@ export const LedMatrix = ({ messageMatrix, scrollSpeed, scrollingEnabled }) => {
       );
     };
   }, []);
+
+  const [messageMatrix, setMessageMatrix] = useState(["".repeat(11)]);
+
+  useEffect(() => {
+    setMessageMatrix(makeMessageMatrix(message));
+  }, [message]);
 
   useEffect(() => {
     if (!messageMatrix || !dimensions) return;
