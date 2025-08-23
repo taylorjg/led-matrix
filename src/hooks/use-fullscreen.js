@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 // or not. Using a media query seems more reliable than checking
 // document.fullscreenElement.
 const checkDisplayModeFullscreen = () => {
-  return window.matchMedia("(display-mode: fullscreen)").matches;
+  return (
+    window.matchMedia("(display-mode: fullscreen)").matches ||
+    document.fullscreenElement != null
+  );
 };
 
 export const useFullscreen = () => {
