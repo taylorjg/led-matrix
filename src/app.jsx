@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Container, Tooltip } from "@mui/material";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 
 import { Controls, LedMatrix, Version } from "@app/components";
+import { useFullscreen } from "@app/hooks";
 
-import { StyledLedMatrixWrapper } from "./app.styles";
+import { StyledFullscreenExitIcon, StyledLedMatrixWrapper } from "./app.styles";
 
 const DEFAULT_MESSAGE = "Next: Deansgate-Castlefield";
 
@@ -12,19 +13,7 @@ export const App = () => {
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
   const [scrollSpeed, setScrollSpeed] = useState(Math.round((1000 / 60) * 5));
   const [scrollingEnabled, setScrollingEnabled] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-
-  useEffect(() => {
-    const onFullscreenChange = () => {
-      setIsFullscreen(Boolean(document.fullscreenElement));
-    };
-
-    document.addEventListener("fullscreenchange", onFullscreenChange);
-
-    return () => {
-      document.removeEventListener("fullscreenchange", onFullscreenChange);
-    };
-  }, []);
+  const { isFullscreen, enterFullscreen, exitFullscreen } = useFullscreen();
 
   const onChangeMessage = (event) => {
     setMessage(event.target.value);
@@ -32,14 +21,6 @@ export const App = () => {
 
   const onChangeScrollSpeed = (_event, value) => {
     setScrollSpeed(value);
-  };
-
-  const onEnterFullscreen = () => {
-    document.documentElement.requestFullscreen();
-  };
-
-  const onExitFullscreen = () => {
-    document.exitFullscreen();
   };
 
   return (
@@ -54,15 +35,9 @@ export const App = () => {
 
       {isFullscreen ? (
         <Tooltip title="Exit fullscreen">
-          <FullscreenExitIcon
-            onClick={onExitFullscreen}
-            style={{
-              cursor: "pointer",
-              position: "fixed",
-              bottom: `0.5rem`,
-              left: `0.5rem`,
-            }}
-          />
+          <StyledFullscreenExitIcon>
+            <FullscreenExitIcon onClick={exitFullscreen} />
+          </StyledFullscreenExitIcon>
         </Tooltip>
       ) : (
         <Controls
@@ -72,7 +47,7 @@ export const App = () => {
           onChangeScrollSpeed={onChangeScrollSpeed}
           scrollingEnabled={scrollingEnabled}
           setScrollingEnabled={setScrollingEnabled}
-          onEnterFullscreen={onEnterFullscreen}
+          onEnterFullscreen={enterFullscreen}
         />
       )}
       <Version />
