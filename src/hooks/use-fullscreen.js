@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
 
+// If the user enters/exits fullscreen mode via the browser UI (e.g. F11 key)
+// it can make it difficult to keep track of whether we are in fullscreen mode
+// or not. Using a media query seems more reliable than checking
+// document.fullscreenElement.
+const checkDisplayModeFullscreen = () => {
+  return window.matchMedia("(display-mode: fullscreen)").matches;
+};
+
 export const useFullscreen = () => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(checkDisplayModeFullscreen);
 
   useEffect(() => {
-    const onFullscreenChange = () => {
-      setIsFullscreen(Boolean(document.fullscreenElement));
+    const onResize = () => {
+      console.log(`[useFullscreen] onResize`);
+      setIsFullscreen(checkDisplayModeFullscreen());
     };
 
-    document.addEventListener("fullscreenchange", onFullscreenChange);
+    window.addEventListener("resize", onResize);
 
     return () => {
-      document.removeEventListener("fullscreenchange", onFullscreenChange);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
@@ -20,7 +29,11 @@ export const useFullscreen = () => {
   };
 
   const exitFullscreen = () => {
-    document.exitFullscreen();
+    // Avoid the following error which seems to occur if the user entered fullscreen mode via the browser UI:
+    // "Uncaught (in promise) TypeError: Failed to execute 'exitFullscreen' on 'Document': Document not active"
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
   };
 
   return {

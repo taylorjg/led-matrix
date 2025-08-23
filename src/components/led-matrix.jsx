@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRequestAnimationFrame } from "@app/hooks";
 import { makeMessageMatrix } from "@app/helpers";
 import { range } from "@app/utils";
+import { StyledLedMatrix } from "./led-matrix.styles";
 
 export const NUM_VERTICAL_DOTS = 11;
 
@@ -158,8 +159,10 @@ export const LedMatrix = ({ message, scrollSpeed, scrollingEnabled }) => {
   }
 
   return (
-    <svg ref={svgRef} width="100%" height="100%">
-      <g transform={`translate(${translateXRef.current})`}>{leds}</g>
-    </svg>
+    <StyledLedMatrix>
+      <svg ref={svgRef} width="100%" height="100%">
+        <g transform={`translate(${translateXRef.current})`}>{leds}</g>
+      </svg>
+    </StyledLedMatrix>
   );
 };
