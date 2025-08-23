@@ -8,6 +8,7 @@ import {
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+
 import { StyledBox, StyledIcons } from "./controls.styles";
 
 export const Controls = ({

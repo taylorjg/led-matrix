@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRequestAnimationFrame } from "@app/hooks";
 import { makeMessageMatrix } from "@app/helpers";
 import { range } from "@app/utils";
+
 import { StyledLedMatrix } from "./led-matrix.styles";
 
 export const NUM_VERTICAL_DOTS = 11;
