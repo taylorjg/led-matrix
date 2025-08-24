@@ -1,12 +1,33 @@
-# React + Vite
+# Description
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+I travel on the Metrolink several days a week and have often thought about implementing an LED matrix display in React to look a bit like the matrix displays on the trams. I finally got round to it.
 
-Currently, two official plugins are available:
+![Tram Matrix Display](images/tram-matrix-display.jpg)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Screenshots
 
-## Expanding the ESLint configuration
+### Normal view on a MacBook Pro 16
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+![MacBook Pro 16 Normal View](images/deviceshots-macbook-pro-16.png)
+
+### Fullscreen view on a MacBook Pro 16
+
+![MacBook Pro 16 Fullscreen View](images/deviceshots-macbook-pro-16-fullscreen.png)
+
+### Prortait mode on a Moto G4
+
+![Moto G4 Portrait](images/led-matrix-moto-portrait.png)
+
+### Landscape mode on a Moto G4
+
+![Moto G4 Landscape](images/led-matrix-moto-landscape.png)
+
+# Links
+
+* [Manchester Metrolink](https://en.wikipedia.org/wiki/Manchester_Metrolink) (Wikipedia)
+* [Bee Network](https://en.wikipedia.org/wiki/Bee_Network) (Wikipedia)
+* [Transport for Greater Manchester](https://tfgm.com/)
+* https://typofoto.wordpress.com/2014/06/19/dot-matrix-fonts/
+* https://github.com/petykowski/London-Underground-Dot-Matrix-Typeface/blob/master/resources/examples/London-Underground-Medium.png
+  * _TODO_
+* [Device Shots — Free Device Mockup Design Generator](https://deviceshots.com/)
