@@ -147,19 +147,12 @@ export const LedMatrix = ({ message, scrollSpeed, scrollingEnabled }) => {
 
   useRequestAnimationFrame(setElapsed, scrollingEnabled);
 
-  if (messageMatrix && dimensions) {
+  if (messageMatrix && dimensions && scrollingEnabled) {
     const colWidth = dimensions.diameter + dimensions.gap;
     const numCols = dimensions.numCols + messageMatrix[0].length;
     const totalMessageWidth = numCols * colWidth - dimensions.gap;
 
     translateXRef.current -= (elapsed / 1000) * scrollSpeed * colWidth;
-
-    console.log(
-      "elapsed:",
-      elapsed,
-      "translateXRef.current:",
-      translateXRef.current
-    );
 
     if (translateXRef.current < -totalMessageWidth) {
       translateXRef.current = 0;
