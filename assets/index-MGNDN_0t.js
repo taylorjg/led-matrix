@@ -105,9 +105,9 @@ export default theme;`}function _y(n){return typeof n=="number"?`${(n*100).toFix
 `,IR=Ra.div`
   margin-top: -1rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-`,JR=({message:n,onChangeMessage:r,scrollSpeed:o,onChangeScrollSpeed:i,scrollingEnabled:u,setScrollingEnabled:f,onEnterFullscreen:d})=>P.jsxs(WR,{children:[P.jsxs(Td,{children:[P.jsx(Ed,{htmlFor:"message",children:"Message"}),P.jsx(ZR,{autoComplete:"off",name:"message",variant:"standard",value:n,onChange:r,fullWidth:!0})]}),P.jsxs(Td,{children:[P.jsx(Ed,{htmlFor:"scrollSpeed",children:"Scroll Speed"}),P.jsx(jR,{name:"scrollSpeed",sx:{width:300},value:o,onChange:i,valueLabelDisplay:"auto",min:0,max:50})]}),P.jsxs(IR,{children:[u?P.jsx(Nl,{title:"Pause scrolling",children:P.jsx(Nv,{fontSize:"large",onClick:()=>f(!1),style:{cursor:"pointer"}})}):P.jsx(Nl,{title:"Resume scrolling",children:P.jsx(_v,{fontSize:"large",onClick:()=>f(!0),style:{cursor:"pointer"}})}),P.jsx(Nl,{title:"Enter fullscreen",children:P.jsx(FR,{fontSize:"large",onClick:d,style:{cursor:"pointer"}})})]})]}),eO=mi(P.jsx("path",{d:"M5 16h3v3h2v-5H5zm3-8H5v2h5V5H8zm6 11h2v-3h3v-2h-5zm2-11V5h-2v5h5V8z"})),tO=Ra.div`
+  gap: 1rem;
+`,JR=({message:n,onChangeMessage:r,scrollSpeed:o,onChangeScrollSpeed:i,scrollingEnabled:u,setScrollingEnabled:f,onEnterFullscreen:d})=>P.jsxs(WR,{children:[P.jsxs(Td,{children:[P.jsx(Ed,{htmlFor:"message",children:"Message"}),P.jsx(ZR,{autoComplete:"off",name:"message",variant:"standard",value:n,onChange:r,fullWidth:!0})]}),P.jsxs(Td,{children:[P.jsx(Ed,{htmlFor:"scrollSpeed",children:"Scroll Speed"}),P.jsx(jR,{name:"scrollSpeed",sx:{width:"100%"},value:o,onChange:i,valueLabelDisplay:"auto",min:0,max:50})]}),P.jsxs(IR,{children:[u?P.jsx(Nl,{title:"Pause scrolling",children:P.jsx(Nv,{fontSize:"large",onClick:()=>f(!1),style:{cursor:"pointer"}})}):P.jsx(Nl,{title:"Resume scrolling",children:P.jsx(_v,{fontSize:"large",onClick:()=>f(!0),style:{cursor:"pointer"}})}),P.jsx(Nl,{title:"Enter fullscreen",children:P.jsx(FR,{fontSize:"large",onClick:d,style:{cursor:"pointer"}})})]})]}),eO=mi(P.jsx("path",{d:"M5 16h3v3h2v-5H5zm3-8H5v2h5V5H8zm6 11h2v-3h3v-2h-5zm2-11V5h-2v5h5V8z"})),tO=Ra.div`
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -116,7 +116,7 @@ export default theme;`}function _y(n){return typeof n=="number"?`${(n*100).toFix
 `,nO=Ra.div`
   position: fixed;
   bottom: 0.5rem;
-  left: 0.5rem;
+  left: 1rem;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -197,5 +197,5 @@ export default theme;`}function _y(n){return typeof n=="number"?`${(n*100).toFix
   font-style: italic;
   position: fixed;
   bottom: 0.5rem;
-  right: 0.5rem;
-`,xO="0.0.11",bO={version:xO},Lv=()=>P.jsxs(vO,{children:["version: ",bO.version]}),SO="Next: Deansgate-Castlefield",TO=()=>{const[n,r]=A.useState(SO),[o,i]=A.useState(15),[u,f]=A.useState(!1),{isFullscreen:d,enterFullscreen:p,exitFullscreen:m}=lO(),g=b=>{r(b.target.value)},y=(b,C)=>{i(C)};return d?P.jsx(aO,{message:n,scrollSpeed:o,scrollingEnabled:u,setScrollingEnabled:f,exitFullscreen:m}):P.jsx(yO,{message:n,onChangeMessage:g,scrollSpeed:o,onChangeScrollSpeed:y,scrollingEnabled:u,setScrollingEnabled:f,enterFullscreen:p})},EO=NT(Tu({palette:{mode:"dark"}})),CO=document.getElementById("root");n1.createRoot(CO).render(P.jsx(A.StrictMode,{children:P.jsxs(BT,{theme:EO,children:[P.jsx(qC,{}),P.jsx(TO,{})]})}));
+  right: 1rem;
+`,xO="0.0.12",bO={version:xO},Lv=()=>P.jsxs(vO,{children:["version: ",bO.version]}),SO="Next: Deansgate-Castlefield",TO=()=>{const[n,r]=A.useState(SO),[o,i]=A.useState(15),[u,f]=A.useState(!1),{isFullscreen:d,enterFullscreen:p,exitFullscreen:m}=lO(),g=b=>{r(b.target.value)},y=(b,C)=>{i(C)};return d?P.jsx(aO,{message:n,scrollSpeed:o,scrollingEnabled:u,setScrollingEnabled:f,exitFullscreen:m}):P.jsx(yO,{message:n,onChangeMessage:g,scrollSpeed:o,onChangeScrollSpeed:y,scrollingEnabled:u,setScrollingEnabled:f,enterFullscreen:p})},EO=NT(Tu({palette:{mode:"dark"}})),CO=document.getElementById("root");n1.createRoot(CO).render(P.jsx(A.StrictMode,{children:P.jsxs(BT,{theme:EO,children:[P.jsx(qC,{}),P.jsx(TO,{})]})}));
