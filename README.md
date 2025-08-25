@@ -1,6 +1,6 @@
 # Description
 
-I travel on the Metrolink several days a week and have often thought about implementing an LED matrix display in React to look a bit like the matrix displays on the trams. I finally got round to it.
+I travel on the Metrolink several times per week and have often thought about implementing a scrolling LED matrix display, using React and SVG, to look a bit like the matrix displays on the trams. I finally got round to it.
 
 ![Tram Matrix Display](images/tram-matrix-display.jpg)
 
@@ -8,19 +8,19 @@ I travel on the Metrolink several days a week and have often thought about imple
 
 ### Normal view on a MacBook Pro 16
 
-![MacBook Pro 16 Normal View](images/deviceshots-macbook-pro-16.png)
+![Normal view on a MacBook Pro 16](images/deviceshots-macbook-pro-16-normal-view.png)
 
-### Fullscreen view on a MacBook Pro 16
+### Fullscreen view on a MacBook Air
 
-![MacBook Pro 16 Fullscreen View](images/deviceshots-macbook-pro-16-fullscreen.png)
+![Fullscreen view on a MacBook Air](images/deviceshots-macbook-air-fullscreen-view.png)
 
-### Prortait mode on a Moto G4
+### Normal view in portrait mode on a Moto G4
 
-![Moto G4 Portrait](images/led-matrix-moto-portrait.png)
+![Normal view in portrait mode on a Moto G4](images/moto-g4-normal-view-portrait.png)
 
-### Landscape mode on a Moto G4
+### Fullscreen view in landscape mode on a Moto G4
 
-![Moto G4 Landscape](images/led-matrix-moto-landscape.png)
+![Fullscreen view in landscape mode on a Moto G4](images/moto-g4-fullscreen-view-landscape.png)
 
 # Links
 

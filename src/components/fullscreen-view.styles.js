@@ -11,7 +11,7 @@ export const StyledFullscreenView = styled.div`
 export const StyledIcons = styled.div`
   position: fixed;
   bottom: 0.5rem;
-  left: 0.5rem;
+  left: 1rem;
   display: flex;
   align-items: center;
   gap: 1rem;

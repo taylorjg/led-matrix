@@ -12,6 +12,6 @@ export const StyledBox = styled(Box)`
 export const StyledIcons = styled.div`
   margin-top: -1rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 1rem;
 `;

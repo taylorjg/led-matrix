@@ -38,7 +38,7 @@ export const Controls = ({
         <FormLabel htmlFor="scrollSpeed">Scroll Speed</FormLabel>
         <Slider
           name="scrollSpeed"
-          sx={{ width: 300 }}
+          sx={{ width: "100%" }}
           value={scrollSpeed}
           onChange={onChangeScrollSpeed}
           valueLabelDisplay="auto"

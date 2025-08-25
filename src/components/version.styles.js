@@ -5,5 +5,5 @@ export const StyledVersion = styled.div`
   font-style: italic;
   position: fixed;
   bottom: 0.5rem;
-  right: 0.5rem;
+  right: 1rem;
 `;
