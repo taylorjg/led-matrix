@@ -6,6 +6,7 @@ import { makeMessageMatrix } from "@app/helpers";
 const NUM_VERTICAL_DOTS = 11;
 const ON_COLOUR = "0xffff00";
 const OFF_COLOUR = "0x101010";
+const ROW_DELAY = 7;
 
 class LedMatrixScene extends Phaser.Scene {
   constructor() {
@@ -109,15 +110,23 @@ class LedMatrixScene extends Phaser.Scene {
     }
   };
 
-  _updateCircles = () => {
+  _updateCircles = async () => {
     const { numRows, numCols } = this._dimensions;
     const offset = this._iteration;
 
     for (const row of range(numRows)) {
-      for (const col of range(numCols)) {
-        const colour = this._getCircleColour(row, col, offset);
-        this._circles[row][col].fillColor = colour;
-      }
+      const delay = ROW_DELAY * (numRows - row - 1);
+      this.time.delayedCall(
+        delay,
+        (row) => {
+          for (const col of range(numCols)) {
+            const colour = this._getCircleColour(row, col, offset);
+            this._circles[row][col].fillColor = colour;
+          }
+        },
+        [row],
+        this
+      );
     }
   };
 
