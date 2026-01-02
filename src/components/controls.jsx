@@ -1,7 +1,9 @@
 import {
   FormControl,
+  FormControlLabel,
   FormLabel,
   Slider,
+  Switch,
   TextField,
   Tooltip,
 } from "@mui/material";
@@ -18,6 +20,8 @@ export const Controls = ({
   onChangeScrollSpeed,
   scrollingEnabled,
   setScrollingEnabled,
+  staggeredScrolling,
+  onChangeStaggeredScrolling,
   onEnterFullscreen,
 }) => {
   return (
@@ -73,6 +77,17 @@ export const Controls = ({
             style={{ cursor: "pointer" }}
           />
         </Tooltip>
+
+        <FormControlLabel
+          control={
+            <Switch
+              checked={staggeredScrolling}
+              onChange={onChangeStaggeredScrolling}
+              name="staggeredScrolling"
+            />
+          }
+          label="Staggered Scrolling"
+        />
       </StyledIcons>
     </StyledBox>
   );

@@ -6,7 +6,7 @@ import { makeMessageMatrix } from "@app/helpers";
 const NUM_VERTICAL_DOTS = 11;
 const ON_COLOUR = "0xffff00";
 const OFF_COLOUR = "0x101010";
-const ROW_DELAY = 7;
+const ROW_DELAY = 8;
 
 class LedMatrixScene extends Phaser.Scene {
   constructor() {
@@ -23,7 +23,9 @@ class LedMatrixScene extends Phaser.Scene {
     };
     this._messageMatrix = makeMessageMatrix("This is a much longer message");
     // this._messageMatrix = makeMessageMatrix("Short message");
-    this._circles = [];
+    this._dots = [];
+    this._dotsPerSecond = 15;
+    this._staggeredScrolling = false;
     this._iteration = 0;
     this._timer = undefined;
   }
@@ -31,7 +33,15 @@ class LedMatrixScene extends Phaser.Scene {
   create() {
     console.log("[LedMatrixScene#create]");
 
-    // this.game.events.on("setMessageMatrix", this._onSetMessageMatrix, this);
+    this.game.events.on("setMessage", this._onSetMessage, this);
+    this.game.events.on("setSpeed", this._onSetSpeed, this);
+    this.game.events.on(
+      "setStaggeredScrolling",
+      this._onSetStaggeredScrolling,
+      this
+    );
+    this.game.events.on("pause", this._onPause, this);
+    this.game.events.on("resume", this._onResume, this);
 
     const { width, height } = this.scale.displaySize;
 
@@ -55,33 +65,43 @@ class LedMatrixScene extends Phaser.Scene {
       marginY,
     };
 
-    for (const row of range(numRows)) {
-      this._circles[row] = [];
-      for (const col of range(numCols)) {
-        const cx = this._calculateCx(col);
-        const cy = this._calculateCy(row);
-        const line = this._messageMatrix[row] ?? "";
-        const ch = line.at(col);
-        const on = ch === "x";
-        const colour = on ? ON_COLOUR : OFF_COLOUR;
-        this._circles[row][col] = this.add.circle(cx, cy, radius, colour);
-      }
-    }
+    this._createDots();
+    this._updateDots();
 
-    this._iteration = 0;
     this._timer = this.time.addEvent({
-      delay: 50,
-      callback: this._onScroll,
-      callbackScope: this,
+      delay: 1000 / this._dotsPerSecond,
       loop: true,
+      callback: this._onScrollDots,
+      callbackScope: this,
     });
   }
 
-  // _onSetMessageMatrix(messageMatrix) {
-  //   console.log("[LedMatrixScene#_onSetMessageMatrix]", messageMatrix);
-  // }
+  _onSetMessage(message) {
+    console.log("[LedMatrixScene#_onSetMessage]", message);
+  }
 
-  _getCircleColour = (row, col, offset = 0) => {
+  _onSetSpeed(dotsPerSecond) {
+    console.log("[LedMatrixScene#_onSetSpeed]", dotsPerSecond);
+    this._dotsPerSecond = dotsPerSecond;
+  }
+
+  _onSetStaggeredScrolling(enabled) {
+    console.log("[LedMatrixScene#_onSetStaggeredScrolling]", enabled);
+    this._staggeredScrolling = enabled;
+  }
+
+  _onPause() {
+    console.log("[LedMatrixScene#_onPause]");
+    this._timer.paused = true;
+  }
+
+  _onResume() {
+    console.log("[LedMatrixScene#_onResume]");
+    this._timer.paused = false;
+  }
+
+  _getDotColour = (row, col, offset = 0) => {
+    // TODO: optimize to avoid recalculating maxCol each time
     const line = this._messageMatrix[row] ?? "";
     const { numCols } = this._dimensions;
     const maxChars = Math.max(numCols, line.length);
@@ -94,45 +114,45 @@ class LedMatrixScene extends Phaser.Scene {
     return colour;
   };
 
-  _makeCircles = () => {
+  _createDots = () => {
     const { numRows, numCols, radius } = this._dimensions;
 
-    this._circles = [];
+    this._dots = [];
 
     for (const row of range(numRows)) {
-      this._circles[row] = [];
+      this._dots[row] = [];
       for (const col of range(numCols)) {
         const cx = this._calculateCx(col);
         const cy = this._calculateCy(row);
-        const colour = this._getCircleColour(row, col);
-        this._circles[row][col] = this.add.circle(cx, cy, radius, colour);
+        this._dots[row][col] = this.add.circle(cx, cy, radius, OFF_COLOUR);
       }
     }
   };
 
-  _updateCircles = async () => {
+  _updateDots = async () => {
     const { numRows, numCols } = this._dimensions;
     const offset = this._iteration;
 
+    const scrollRow = (row) => {
+      for (const col of range(numCols)) {
+        const colour = this._getDotColour(row, col, offset);
+        this._dots[row][col].fillColor = colour;
+      }
+    };
+
     for (const row of range(numRows)) {
-      const delay = ROW_DELAY * (numRows - row - 1);
-      this.time.delayedCall(
-        delay,
-        (row) => {
-          for (const col of range(numCols)) {
-            const colour = this._getCircleColour(row, col, offset);
-            this._circles[row][col].fillColor = colour;
-          }
-        },
-        [row],
-        this
-      );
+      if (this._staggeredScrolling) {
+        const delay = ROW_DELAY * (numRows - row - 1);
+        this.time.delayedCall(delay, scrollRow, [row], this);
+      } else {
+        scrollRow(row);
+      }
     }
   };
 
-  _onScroll = () => {
+  _onScrollDots = () => {
     this._iteration++;
-    this._updateCircles();
+    this._updateDots();
   };
 
   _calculateCx = (col) => {
@@ -170,14 +190,17 @@ export const initGame = (parent) => {
   const game = new Phaser.Game(gameConfig);
 
   gameActions = makeGameActions(game);
-  console.log("[initGame]", { gameActions });
 
   return gameActions;
 };
 
 const makeGameActions = (game) => {
   return {
-    setMessageMatrix: (messageMatrix) =>
-      game.events.emit("setMessageMatrix", messageMatrix),
+    setMessage: (message) => game.events.emit("setMessage", message),
+    setSpeed: (dotsPerSecond) => game.events.emit("setSpeed", dotsPerSecond),
+    setStaggeredScrolling: (enabled) =>
+      game.events.emit("setStaggeredScrolling", enabled),
+    pause: () => game.events.emit("pause"),
+    resume: () => game.events.emit("resume"),
   };
 };
