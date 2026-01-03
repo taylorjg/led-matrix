@@ -11,32 +11,41 @@ export const LedMatrixPhaser = ({
   staggeredScrolling,
 }) => {
   const parentRef = useRef();
+  const initialValuesRef = useRef({
+    message,
+    scrollSpeed,
+    scrollingEnabled,
+    staggeredScrolling,
+  });
   const gameActionsRef = useRef();
 
   useEffect(() => {
-    if (parentRef.current) {
-      gameActionsRef.current = initGame(parentRef.current);
-    }
+    gameActionsRef.current = initGame(
+      parentRef.current,
+      initialValuesRef.current
+    );
+
+    return gameActionsRef.current.destroy;
   }, []);
 
   useEffect(() => {
-    gameActionsRef.current?.setMessage(message);
+    gameActionsRef.current.setMessage(message);
   }, [message]);
 
   useEffect(() => {
-    gameActionsRef.current?.setSpeed(scrollSpeed);
+    gameActionsRef.current.setSpeed(scrollSpeed);
   }, [scrollSpeed]);
 
   useEffect(() => {
     if (scrollingEnabled) {
-      gameActionsRef.current?.resume();
+      gameActionsRef.current.resume();
     } else {
-      gameActionsRef.current?.pause();
+      gameActionsRef.current.pause();
     }
   }, [scrollingEnabled]);
 
   useEffect(() => {
-    gameActionsRef.current?.setStaggeredScrolling(staggeredScrolling);
+    gameActionsRef.current.setStaggeredScrolling(staggeredScrolling);
   }, [staggeredScrolling]);
 
   return <StyledLedMatrix ref={parentRef} />;

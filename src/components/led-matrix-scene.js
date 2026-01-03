@@ -6,7 +6,6 @@ import { makeMessageMatrix } from "@app/helpers";
 const NUM_VERTICAL_DOTS = 11;
 const ON_COLOUR = "0xffff00";
 const OFF_COLOUR = "0x101010";
-const DEFAULT_DOTS_PER_SECOND = 30;
 const ROW_DELAY = 6;
 
 class LedMatrixScene extends Phaser.Scene {
@@ -22,18 +21,20 @@ class LedMatrixScene extends Phaser.Scene {
       marginX: 0,
       marginY: 0,
     };
-    this._messageMatrix = makeMessageMatrix(
-      "This message is long enough to require scrolling blah"
-    );
-    this._dots = [];
-    this._dotsPerSecond = DEFAULT_DOTS_PER_SECOND;
+    this._messageMatrix = makeMessageMatrix("");
+    this._dotsPerSecond = 0;
     this._staggeredScrolling = false;
+    this._dots = [];
     this._iteration = 0;
     this._timer = undefined;
   }
 
-  create() {
-    console.log("[LedMatrixScene#create]");
+  create(data) {
+    console.log("[LedMatrixScene#create]", data);
+
+    this._messageMatrix = makeMessageMatrix(data.message);
+    this._dotsPerSecond = data.scrollSpeed;
+    this._staggeredScrolling = data.staggeredScrolling;
 
     this.game.events.on("setMessage", this._onSetMessage, this);
     this.game.events.on("setSpeed", this._onSetSpeed, this);
@@ -44,6 +45,23 @@ class LedMatrixScene extends Phaser.Scene {
     );
     this.game.events.on("pause", this._onPause, this);
     this.game.events.on("resume", this._onResume, this);
+
+    this.scale.on("resize", this._onResize, this);
+
+    this._timer = this.time.addEvent({
+      delay: Math.round(1000 / this._dotsPerSecond),
+      loop: true,
+      callback: this._onScrollDots,
+      callbackScope: this,
+    });
+  }
+
+  _onResize() {
+    console.log("[LedMatrixScene#_onResize]");
+
+    for (const dot of this._dots.flat()) {
+      dot.destroy(true);
+    }
 
     const { width, height } = this.scale.displaySize;
 
@@ -70,12 +88,7 @@ class LedMatrixScene extends Phaser.Scene {
     this._createDots();
     this._updateDots();
 
-    this._timer = this.time.addEvent({
-      delay: 1000 / this._dotsPerSecond,
-      loop: true,
-      callback: this._onScrollDots,
-      callbackScope: this,
-    });
+    this._iteration = 0;
   }
 
   _onSetMessage(message) {
@@ -86,7 +99,7 @@ class LedMatrixScene extends Phaser.Scene {
   _onSetSpeed(dotsPerSecond) {
     console.log("[LedMatrixScene#_onSetSpeed]", dotsPerSecond);
     this._dotsPerSecond = dotsPerSecond;
-    this._timer.delay = 1000 / this._dotsPerSecond;
+    this._timer.delay = Math.round(1000 / this._dotsPerSecond);
   }
 
   _onSetStaggeredScrolling(enabled) {
@@ -173,19 +186,14 @@ class LedMatrixScene extends Phaser.Scene {
 const gameConfig = {
   type: Phaser.AUTO,
   backgroundColor: "#000000",
-  scene: LedMatrixScene,
 };
 
-let gameActions = undefined;
+// re StyledLedMatrix: 2 * border width (px) + 2 * padding (px)
+const FUDGE_FACTOR = 40;
 
-export const initGame = (parent) => {
-  if (gameActions) return gameActions;
-
+export const initGame = (parent, initialValues) => {
   const parentRect = parent.getBoundingClientRect();
   console.log("[initGame]", { parentRect });
-
-  // re StyledLedMatrix: 2 * border width (px) + 2 * padding (px)
-  const FUDGE_FACTOR = 40;
 
   gameConfig.parent = parent;
   gameConfig.width = parentRect.width - FUDGE_FACTOR;
@@ -193,12 +201,46 @@ export const initGame = (parent) => {
 
   const game = new Phaser.Game(gameConfig);
 
-  gameActions = makeGameActions(game);
+  game.scene.add("LedMatrixScene", LedMatrixScene, true, initialValues);
+
+  const gameActions = makeGameActions(game);
 
   return gameActions;
 };
 
 const makeGameActions = (game) => {
+  const recalculateDimensions = () => {
+    const parent = game.config.parent;
+    const parentRect = parent.getBoundingClientRect();
+    console.log("[recalculateDimensions]", { parentRect });
+    const newWidth = parentRect.width - FUDGE_FACTOR;
+    const newHeight = parentRect.height - FUDGE_FACTOR;
+    game.scale.resize(newWidth, newHeight);
+  };
+
+  const onResize = () => {
+    console.log("[onResize]");
+    recalculateDimensions();
+  };
+
+  const onScreenOrientationChange = () => {
+    console.log("[onScreenOrientationChange]");
+    recalculateDimensions();
+  };
+
+  window.addEventListener("resize", onResize);
+  screen.orientation?.addEventListener("change", onScreenOrientationChange);
+
+  const destroy = () => {
+    console.log("[gameActions#destroy]");
+    window.removeEventListener("resize", onResize);
+    screen.orientation?.removeEventListener(
+      "change",
+      onScreenOrientationChange
+    );
+    game.destroy(true);
+  };
+
   return {
     setMessage: (message) => game.events.emit("setMessage", message),
     setSpeed: (dotsPerSecond) => game.events.emit("setSpeed", dotsPerSecond),
@@ -206,5 +248,6 @@ const makeGameActions = (game) => {
       game.events.emit("setStaggeredScrolling", enabled),
     pause: () => game.events.emit("pause"),
     resume: () => game.events.emit("resume"),
+    destroy,
   };
 };

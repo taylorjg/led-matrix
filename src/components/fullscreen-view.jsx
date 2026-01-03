@@ -1,9 +1,9 @@
-import { Tooltip } from "@mui/material";
+import { FormControlLabel, Switch, Tooltip } from "@mui/material";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
-import { LedMatrix, Version } from "@app/components";
+import { LedMatrixPhaser, Version } from "@app/components";
 
 import { StyledFullscreenView, StyledIcons } from "./fullscreen-view.styles";
 
@@ -12,14 +12,17 @@ export const FullscreenView = ({
   scrollSpeed,
   scrollingEnabled,
   setScrollingEnabled,
+  staggeredScrolling,
+  onChangeStaggeredScrolling,
   exitFullscreen,
 }) => {
   return (
     <StyledFullscreenView>
-      <LedMatrix
+      <LedMatrixPhaser
         message={message}
         scrollSpeed={scrollSpeed}
         scrollingEnabled={scrollingEnabled}
+        staggeredScrolling={staggeredScrolling}
       />
       <StyledIcons>
         {scrollingEnabled ? (
@@ -37,9 +40,21 @@ export const FullscreenView = ({
             />
           </Tooltip>
         )}
+
         <Tooltip title="Exit fullscreen">
           <FullscreenExitIcon onClick={exitFullscreen} />
         </Tooltip>
+
+        <FormControlLabel
+          control={
+            <Switch
+              checked={staggeredScrolling}
+              onChange={onChangeStaggeredScrolling}
+              name="staggeredScrolling"
+            />
+          }
+          label="Staggered Scrolling"
+        />
       </StyledIcons>
       <Version />
     </StyledFullscreenView>
