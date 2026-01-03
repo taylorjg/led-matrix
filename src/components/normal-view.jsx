@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 
-import { Controls, LedMatrixPhaser, Version } from "@app/components";
+import { Controls, LedMatrixContainer, Version } from "@app/components";
 
 export const NormalView = ({
   message,
@@ -15,7 +15,7 @@ export const NormalView = ({
 }) => {
   return (
     <Container sx={{ mt: 2 }}>
-      <LedMatrixPhaser
+      <LedMatrixContainer
         message={message}
         scrollSpeed={scrollSpeed}
         scrollingEnabled={scrollingEnabled}

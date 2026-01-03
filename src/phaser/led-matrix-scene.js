@@ -188,7 +188,11 @@ const gameConfig = {
   backgroundColor: "#000000",
 };
 
-// re StyledLedMatrix: 2 * border width (px) + 2 * padding (px)
+// We need to account for the border width and padding of the parent element
+// (i.e. the StyledLedMatrixContainer div) in order to calculate the size of
+// the remaining space available for the Phaser canvas:
+// * 2 x 10px for the left/right or top/bottom border widths
+// * 2 x 10px for the left/right or top/bottom padding
 const FUDGE_FACTOR = 40;
 
 export const initGame = (parent, initialValues) => {

@@ -3,7 +3,7 @@ import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
-import { LedMatrixPhaser, Version } from "@app/components";
+import { LedMatrixContainer, Version } from "@app/components";
 
 import { StyledFullscreenView, StyledIcons } from "./fullscreen-view.styles";
 
@@ -18,7 +18,7 @@ export const FullscreenView = ({
 }) => {
   return (
     <StyledFullscreenView>
-      <LedMatrixPhaser
+      <LedMatrixContainer
         message={message}
         scrollSpeed={scrollSpeed}
         scrollingEnabled={scrollingEnabled}

@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 
 import { initGame } from "@app/phaser";
 
-import { StyledLedMatrixPhaser } from "./led-matrix-phaser.styles";
+import { StyledLedMatrixContainer } from "./led-matrix-container.styles";
 
-export const LedMatrixPhaser = ({
+export const LedMatrixContainer = ({
   message,
   scrollSpeed,
   scrollingEnabled,
@@ -48,5 +48,5 @@ export const LedMatrixPhaser = ({
     gameActionsRef.current.setStaggeredScrolling(staggeredScrolling);
   }, [staggeredScrolling]);
 
-  return <StyledLedMatrixPhaser ref={parentRef} />;
+  return <StyledLedMatrixContainer ref={parentRef} />;
 };
