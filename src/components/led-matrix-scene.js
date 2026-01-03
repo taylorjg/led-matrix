@@ -6,7 +6,8 @@ import { makeMessageMatrix } from "@app/helpers";
 const NUM_VERTICAL_DOTS = 11;
 const ON_COLOUR = "0xffff00";
 const OFF_COLOUR = "0x101010";
-const ROW_DELAY = 8;
+const DEFAULT_DOTS_PER_SECOND = 30;
+const ROW_DELAY = 6;
 
 class LedMatrixScene extends Phaser.Scene {
   constructor() {
@@ -21,10 +22,11 @@ class LedMatrixScene extends Phaser.Scene {
       marginX: 0,
       marginY: 0,
     };
-    this._messageMatrix = makeMessageMatrix("This is a much longer message");
-    // this._messageMatrix = makeMessageMatrix("Short message");
+    this._messageMatrix = makeMessageMatrix(
+      "This message is long enough to require scrolling blah"
+    );
     this._dots = [];
-    this._dotsPerSecond = 15;
+    this._dotsPerSecond = DEFAULT_DOTS_PER_SECOND;
     this._staggeredScrolling = false;
     this._iteration = 0;
     this._timer = undefined;
@@ -78,11 +80,13 @@ class LedMatrixScene extends Phaser.Scene {
 
   _onSetMessage(message) {
     console.log("[LedMatrixScene#_onSetMessage]", message);
+    this._messageMatrix = makeMessageMatrix(message);
   }
 
   _onSetSpeed(dotsPerSecond) {
     console.log("[LedMatrixScene#_onSetSpeed]", dotsPerSecond);
     this._dotsPerSecond = dotsPerSecond;
+    this._timer.delay = 1000 / this._dotsPerSecond;
   }
 
   _onSetStaggeredScrolling(enabled) {
