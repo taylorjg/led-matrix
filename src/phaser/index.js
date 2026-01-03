@@ -1,1 +1,1 @@
-export * from "./led-matrix-scene";
+export * from "./led-matrix-game";

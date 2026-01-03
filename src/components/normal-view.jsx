@@ -1,6 +1,8 @@
 import { Container } from "@mui/material";
 
-import { Controls, LedMatrixContainer, Version } from "@app/components";
+import { Controls } from "./controls";
+import { LedMatrixContainer } from "./led-matrix-container";
+import { Version } from "./version";
 
 export const NormalView = ({
   message,
