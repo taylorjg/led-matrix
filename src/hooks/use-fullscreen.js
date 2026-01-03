@@ -16,7 +16,7 @@ export const useFullscreen = () => {
 
   useEffect(() => {
     const onResize = () => {
-      console.log(`[useFullscreen] onResize`);
+      console.log("[useFullscreen] onResize");
       setIsFullscreen(checkDisplayModeFullscreen());
     };
 
