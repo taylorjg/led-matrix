@@ -1,5 +1,5 @@
+import { NUM_VERTICAL_DOTS } from "@app/constants";
 import { fontMap2 as fontMap } from "@app/fonts";
-import { NUM_VERTICAL_DOTS } from "@app/components/led-matrix";
 
 const appendCharacterToMatrix = (matrix, ch) => {
   const data = fontMap.get(ch);

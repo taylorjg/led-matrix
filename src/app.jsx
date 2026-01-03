@@ -4,10 +4,11 @@ import { FullscreenView, NormalView } from "@app/components";
 import { useFullscreen } from "@app/hooks";
 
 const DEFAULT_MESSAGE = "Next: Deansgate-Castlefield";
+const DEFAULT_SPEED = 30;
 
 export const App = () => {
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
-  const [scrollSpeed, setScrollSpeed] = useState(25);
+  const [scrollSpeed, setScrollSpeed] = useState(DEFAULT_SPEED);
   const [scrollingEnabled, setScrollingEnabled] = useState(true);
   const [staggeredScrolling, setStaggeredScrolling] = useState(false);
   const { isFullscreen, enterFullscreen, exitFullscreen } = useFullscreen();

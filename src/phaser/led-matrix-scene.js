@@ -2,8 +2,8 @@ import * as Phaser from "phaser";
 
 import { range } from "@app/utils";
 import { makeMessageMatrix } from "@app/helpers";
+import { NUM_VERTICAL_DOTS } from "@app/constants";
 
-const NUM_VERTICAL_DOTS = 11;
 const ON_COLOUR = "0xffff00";
 const OFF_COLOUR = "0x101010";
 const ROW_DELAY = 6;
