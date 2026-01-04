@@ -6,6 +6,7 @@ import { StyledLedMatrixContainer } from "./led-matrix-container.styles";
 
 export const LedMatrixContainer = ({
   message,
+  font,
   scrollSpeed,
   scrollingEnabled,
   staggeredScrolling,
@@ -13,6 +14,7 @@ export const LedMatrixContainer = ({
   const parentRef = useRef();
   const initialValuesRef = useRef({
     message,
+    font,
     scrollSpeed,
     scrollingEnabled,
     staggeredScrolling,
@@ -31,6 +33,10 @@ export const LedMatrixContainer = ({
   useEffect(() => {
     gameActionsRef.current.setMessage(message);
   }, [message]);
+
+  useEffect(() => {
+    gameActionsRef.current.setFont(font);
+  }, [font]);
 
   useEffect(() => {
     gameActionsRef.current.setSpeed(scrollSpeed);

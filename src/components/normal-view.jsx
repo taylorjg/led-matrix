@@ -6,6 +6,7 @@ import { Version } from "./version";
 
 export const NormalView = ({
   message,
+  font,
   onChangeMessage,
   scrollSpeed,
   onChangeScrollSpeed,
@@ -19,6 +20,7 @@ export const NormalView = ({
     <Container sx={{ mt: 2 }}>
       <LedMatrixContainer
         message={message}
+        font={font}
         scrollSpeed={scrollSpeed}
         scrollingEnabled={scrollingEnabled}
         staggeredScrolling={staggeredScrolling}

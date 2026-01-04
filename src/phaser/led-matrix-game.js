@@ -46,8 +46,8 @@ const makeGameActions = (game) => {
     recalculateDimensions();
   };
 
-  const onScreenOrientationChange = () => {
-    console.log("[onScreenOrientationChange]");
+  const onScreenOrientationChange = (e) => {
+    console.log("[onScreenOrientationChange]", e.target.type);
     recalculateDimensions();
   };
 
@@ -66,6 +66,7 @@ const makeGameActions = (game) => {
 
   return {
     setMessage: (message) => game.events.emit("setMessage", message),
+    setFont: (font) => game.events.emit("setFont", font),
     setSpeed: (dotsPerSecond) => game.events.emit("setSpeed", dotsPerSecond),
     setStaggeredScrolling: (enabled) =>
       game.events.emit("setStaggeredScrolling", enabled),

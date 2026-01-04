@@ -1,6 +1,5 @@
 import * as Phaser from "phaser";
 
-import { NUM_VERTICAL_DOTS } from "@app/constants";
 import { makeMessageMatrix } from "@app/helpers";
 import { range } from "@app/utils";
 
@@ -21,7 +20,8 @@ export class LedMatrixScene extends Phaser.Scene {
       marginX: 0,
       marginY: 0,
     };
-    this._messageMatrix = makeMessageMatrix("");
+    this._font = undefined;
+    this._messageMatrix = [];
     this._dotsPerSecond = 0;
     this._staggeredScrolling = false;
     this._dots = [];
@@ -32,11 +32,13 @@ export class LedMatrixScene extends Phaser.Scene {
   create(data) {
     console.log("[LedMatrixScene#create]", data);
 
-    this._messageMatrix = makeMessageMatrix(data.message);
+    this._font = data.font;
+    this._messageMatrix = makeMessageMatrix(this._font, data.message);
     this._dotsPerSecond = data.scrollSpeed;
     this._staggeredScrolling = data.staggeredScrolling;
 
     this.game.events.on("setMessage", this._onSetMessage, this);
+    this.game.events.on("setFont", this._onSetFont, this);
     this.game.events.on("setSpeed", this._onSetSpeed, this);
     this.game.events.on(
       "setStaggeredScrolling",
@@ -65,12 +67,13 @@ export class LedMatrixScene extends Phaser.Scene {
 
     const { width, height } = this.scale.displaySize;
 
+    const numVerticalDots = this._font.numVerticalDots;
     const numerator = 10 * height;
-    const denominator = 11 * NUM_VERTICAL_DOTS - 1;
+    const denominator = 11 * numVerticalDots - 1;
     const diameter = Math.floor(numerator / denominator);
     const radius = diameter / 2;
     const gap = diameter / 10;
-    const numRows = NUM_VERTICAL_DOTS;
+    const numRows = numVerticalDots;
     const numCols = Math.floor(width / (diameter + gap));
     const marginX = (width - (numCols * (diameter + gap) - gap)) / 2;
     const marginY = (height - (numRows * (diameter + gap) - gap)) / 2;
@@ -93,7 +96,13 @@ export class LedMatrixScene extends Phaser.Scene {
 
   _onSetMessage(message) {
     console.log("[LedMatrixScene#_onSetMessage]", message);
-    this._messageMatrix = makeMessageMatrix(message);
+    this._messageMatrix = makeMessageMatrix(this._font, message);
+  }
+
+  _onSetFont(font) {
+    console.log("[LedMatrixScene#_onSetFont]", font);
+    this._font = font;
+    this._messageMatrix = makeMessageMatrix(this._font, this._messageMatrix);
   }
 
   _onSetSpeed(dotsPerSecond) {

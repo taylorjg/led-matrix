@@ -9,6 +9,7 @@ import { StyledFullscreenView, StyledIcons } from "./fullscreen-view.styles";
 
 export const FullscreenView = ({
   message,
+  font,
   scrollSpeed,
   scrollingEnabled,
   setScrollingEnabled,
@@ -20,6 +21,7 @@ export const FullscreenView = ({
     <StyledFullscreenView>
       <LedMatrixContainer
         message={message}
+        font={font}
         scrollSpeed={scrollSpeed}
         scrollingEnabled={scrollingEnabled}
         staggeredScrolling={staggeredScrolling}
