@@ -32,7 +32,7 @@ export const initGame = (parent, initialValues) => {
 };
 
 const makeGameActions = (game) => {
-  const recalculateDimensions = () => {
+  const resizeGameToMatchParent = () => {
     const parent = game.config.parent;
     const parentRect = parent.getBoundingClientRect();
     console.log("[recalculateDimensions]", { parentRect });
@@ -43,12 +43,12 @@ const makeGameActions = (game) => {
 
   const onResize = () => {
     console.log("[onResize]");
-    recalculateDimensions();
+    resizeGameToMatchParent();
   };
 
   const onScreenOrientationChange = (e) => {
     console.log("[onScreenOrientationChange]", e.target.type);
-    recalculateDimensions();
+    resizeGameToMatchParent();
   };
 
   window.addEventListener("resize", onResize);

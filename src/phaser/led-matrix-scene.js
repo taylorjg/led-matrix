@@ -78,12 +78,16 @@ export class LedMatrixScene extends Phaser.Scene {
     const marginX = (width - (numCols * (diameter + gap) - gap)) / 2;
     const marginY = (height - (numRows * (diameter + gap) - gap)) / 2;
 
+    const firstLine = this._messageMatrix[0] ?? "";
+    const wrapAtCol = Math.max(numCols, firstLine.length + numCols);
+
     this._dimensions = {
       radius,
       diameter,
       gap,
       numRows,
       numCols,
+      wrapAtCol,
       marginX,
       marginY,
     };
@@ -97,6 +101,9 @@ export class LedMatrixScene extends Phaser.Scene {
   _onSetMessage(message) {
     console.log("[LedMatrixScene#_onSetMessage]", message);
     this._messageMatrix = makeMessageMatrix(this._font, message);
+    const firstLine = this._messageMatrix[0] ?? "";
+    const { numCols } = this._dimensions;
+    this._dimensions.wrapAtCol = Math.max(numCols, firstLine.length + numCols);
   }
 
   _onSetFont(font) {
@@ -127,13 +134,9 @@ export class LedMatrixScene extends Phaser.Scene {
   }
 
   _getDotColour = (row, col, offset = 0) => {
-    // TODO: optimize to avoid recalculating maxCol each time
     const line = this._messageMatrix[row] ?? "";
-    const { numCols } = this._dimensions;
-    const maxChars = Math.max(numCols, line.length);
-    const fullWidths = Math.ceil(maxChars / numCols);
-    const maxCol = fullWidths * numCols;
-    const actualCol = (col + offset) % maxCol;
+    const { wrapAtCol } = this._dimensions;
+    const actualCol = (col + offset) % wrapAtCol;
     const ch = line.at(actualCol);
     const on = ch === "x";
     const colour = on ? ON_COLOUR : OFF_COLOUR;
