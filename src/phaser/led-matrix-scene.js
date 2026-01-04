@@ -79,7 +79,7 @@ export class LedMatrixScene extends Phaser.Scene {
     const marginY = (height - (numRows * (diameter + gap) - gap)) / 2;
 
     const firstLine = this._messageMatrix[0] ?? "";
-    const wrapAtCol = Math.max(numCols, firstLine.length + numCols);
+    const wrapAtCol = firstLine.length + numCols;
 
     this._dimensions = {
       radius,
@@ -103,7 +103,7 @@ export class LedMatrixScene extends Phaser.Scene {
     this._messageMatrix = makeMessageMatrix(this._font, message);
     const firstLine = this._messageMatrix[0] ?? "";
     const { numCols } = this._dimensions;
-    this._dimensions.wrapAtCol = Math.max(numCols, firstLine.length + numCols);
+    this._dimensions.wrapAtCol = firstLine.length + numCols;
   }
 
   _onSetFont(font) {
