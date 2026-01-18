@@ -1,4 +1,4 @@
-import { range } from "@app/utils";
+import { makeCharacterKvps } from "./utils";
 
 // https://github.com/petykowski/London-Underground-Dot-Matrix-Typeface/blob/master/resources/examples/London-Underground-Medium.png
 
@@ -17,7 +17,7 @@ const uppercaseLetters = `
  xx       xx xx     xxx  xxx    xxx xx     xxx 
  xx       xx xxxxxxxxx    xxxxxxxx  xxxxxxxxx  
  xx       xx xxxxxxxx      xxxxxx   xxxxxxxx   
-                                               `;
+|           |          |           |           `;
 
 const lowercaseLetters = `
          
@@ -34,35 +34,28 @@ const lowercaseLetters = `
  xx    xx
  xxxxxxxx
   xxxx xx 
-         `;
+|        `;
 
-const findBreaks = (lines) => {
-  const lineLength = lines[0].length;
-  const breaks = [];
-  for (const index of range(lineLength)) {
-    if (lines.every((line) => line[index] === " ")) {
-      breaks.push(index);
-    }
-  }
-  breaks.push(lineLength);
-  return breaks;
-};
-
-const makeCharacterKvps = (characters, line) => {
-  const lines = line.split("\n").filter(Boolean);
-  const chs = Array.from(characters);
-  const breaks = findBreaks(lines);
-
-  console.assert(breaks.length == chs.length + 1);
-
-  return chs.map((ch, index) => {
-    const start = breaks[index];
-    const end = breaks[index + 1] - 1;
-    return [ch, { lines, start, end }];
-  });
-};
+const symbols = `
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+|    
+`;
 
 export const fontMap1 = new Map([
   ...makeCharacterKvps("ABCD", uppercaseLetters),
   ...makeCharacterKvps("a", lowercaseLetters),
+  ...makeCharacterKvps(" ", symbols),
 ]);
