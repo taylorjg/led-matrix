@@ -12,8 +12,6 @@ export const NormalView = ({
   onChangeScrollSpeed,
   scrollingEnabled,
   setScrollingEnabled,
-  staggeredScrolling,
-  onChangeStaggeredScrolling,
   enterFullscreen,
 }) => {
   return (
@@ -23,7 +21,6 @@ export const NormalView = ({
         font={font}
         scrollSpeed={scrollSpeed}
         scrollingEnabled={scrollingEnabled}
-        staggeredScrolling={staggeredScrolling}
       />
       <Controls
         message={message}
@@ -32,8 +29,6 @@ export const NormalView = ({
         onChangeScrollSpeed={onChangeScrollSpeed}
         scrollingEnabled={scrollingEnabled}
         setScrollingEnabled={setScrollingEnabled}
-        staggeredScrolling={staggeredScrolling}
-        onChangeStaggeredScrolling={onChangeStaggeredScrolling}
         onEnterFullscreen={enterFullscreen}
       />
       <Version />

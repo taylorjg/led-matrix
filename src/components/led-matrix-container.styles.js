@@ -2,8 +2,7 @@ import styled from "@emotion/styled";
 
 export const StyledLedMatrixContainer = styled.div`
   width: 100%;
-  height: 25vh;
+  height: 15vh;
   border: 10px solid gray;
-  border-radius: 10px;
   padding: 10px;
 `;

@@ -4,8 +4,7 @@ import { makeMessageMatrix } from "@app/helpers";
 import { range } from "@app/utils";
 
 const ON_COLOUR = "0xffff00";
-const OFF_COLOUR = "0x101010";
-const ROW_DELAY = 6;
+const OFF_COLOUR = "0x303030";
 
 export class LedMatrixScene extends Phaser.Scene {
   constructor() {
@@ -23,7 +22,6 @@ export class LedMatrixScene extends Phaser.Scene {
     this._font = undefined;
     this._messageMatrix = [];
     this._dotsPerSecond = 0;
-    this._staggeredScrolling = false;
     this._dots = [];
     this._iteration = 0;
     this._timer = undefined;
@@ -35,16 +33,10 @@ export class LedMatrixScene extends Phaser.Scene {
     this._font = data.font;
     this._messageMatrix = makeMessageMatrix(this._font, data.message);
     this._dotsPerSecond = data.scrollSpeed;
-    this._staggeredScrolling = data.staggeredScrolling;
 
     this.game.events.on("setMessage", this._onSetMessage, this);
     this.game.events.on("setFont", this._onSetFont, this);
     this.game.events.on("setSpeed", this._onSetSpeed, this);
-    this.game.events.on(
-      "setStaggeredScrolling",
-      this._onSetStaggeredScrolling,
-      this
-    );
     this.game.events.on("pause", this._onPause, this);
     this.game.events.on("resume", this._onResume, this);
 
@@ -118,11 +110,6 @@ export class LedMatrixScene extends Phaser.Scene {
     this._timer.delay = Math.round(1000 / this._dotsPerSecond);
   }
 
-  _onSetStaggeredScrolling(enabled) {
-    console.log("[LedMatrixScene#_onSetStaggeredScrolling]", enabled);
-    this._staggeredScrolling = enabled;
-  }
-
   _onPause() {
     console.log("[LedMatrixScene#_onPause]");
     this._timer.paused = true;
@@ -170,12 +157,7 @@ export class LedMatrixScene extends Phaser.Scene {
     };
 
     for (const row of range(numRows)) {
-      if (this._staggeredScrolling) {
-        const delay = ROW_DELAY * (numRows - row - 1);
-        this.time.delayedCall(delay, scrollRow, [row], this);
-      } else {
-        scrollRow(row);
-      }
+      scrollRow(row);
     }
   };
 

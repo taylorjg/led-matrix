@@ -68,8 +68,6 @@ const makeGameActions = (game) => {
     setMessage: (message) => game.events.emit("setMessage", message),
     setFont: (font) => game.events.emit("setFont", font),
     setSpeed: (dotsPerSecond) => game.events.emit("setSpeed", dotsPerSecond),
-    setStaggeredScrolling: (enabled) =>
-      game.events.emit("setStaggeredScrolling", enabled),
     pause: () => game.events.emit("pause"),
     resume: () => game.events.emit("resume"),
     destroy,

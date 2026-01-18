@@ -9,7 +9,6 @@ export const LedMatrixContainer = ({
   font,
   scrollSpeed,
   scrollingEnabled,
-  staggeredScrolling,
 }) => {
   const parentRef = useRef();
   const initialValuesRef = useRef({
@@ -17,7 +16,6 @@ export const LedMatrixContainer = ({
     font,
     scrollSpeed,
     scrollingEnabled,
-    staggeredScrolling,
   });
   const gameActionsRef = useRef();
 
@@ -49,10 +47,6 @@ export const LedMatrixContainer = ({
       gameActionsRef.current.pause();
     }
   }, [scrollingEnabled]);
-
-  useEffect(() => {
-    gameActionsRef.current.setStaggeredScrolling(staggeredScrolling);
-  }, [staggeredScrolling]);
 
   return <StyledLedMatrixContainer ref={parentRef} />;
 };

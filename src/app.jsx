@@ -13,7 +13,6 @@ export const App = () => {
   const [font] = useState(DEFAULT_FONT);
   const [scrollSpeed, setScrollSpeed] = useState(DEFAULT_SPEED);
   const [scrollingEnabled, setScrollingEnabled] = useState(true);
-  const [staggeredScrolling, setStaggeredScrolling] = useState(false);
   const { isFullscreen, enterFullscreen, exitFullscreen } = useFullscreen();
 
   const onChangeMessage = (event) => {
@@ -24,19 +23,13 @@ export const App = () => {
     setScrollSpeed(value);
   };
 
-  const onChangeStaggeredScrolling = (_event, value) => {
-    setStaggeredScrolling(value);
-  };
-
   return isFullscreen ? (
     <FullscreenView
       message={message}
       font={font}
       scrollSpeed={scrollSpeed}
       scrollingEnabled={scrollingEnabled}
-      staggeredScrolling={staggeredScrolling}
       setScrollingEnabled={setScrollingEnabled}
-      onChangeStaggeredScrolling={onChangeStaggeredScrolling}
       exitFullscreen={exitFullscreen}
     />
   ) : (
@@ -48,8 +41,6 @@ export const App = () => {
       onChangeScrollSpeed={onChangeScrollSpeed}
       scrollingEnabled={scrollingEnabled}
       setScrollingEnabled={setScrollingEnabled}
-      staggeredScrolling={staggeredScrolling}
-      onChangeStaggeredScrolling={onChangeStaggeredScrolling}
       enterFullscreen={enterFullscreen}
     />
   );
