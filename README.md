@@ -31,3 +31,7 @@ I travel on the Metrolink several times per week and have often thought about im
 * https://github.com/petykowski/London-Underground-Dot-Matrix-Typeface/blob/master/resources/examples/London-Underground-Medium.png
   * _TODO_
 * [Device Shots — Free Device Mockup Design Generator](https://deviceshots.com/)
+* Promising looking PDF: [TfGM Developer Portal](https://www.greatermanchester-ca.gov.uk/media/3948/tfgm-developer-portal.pdf)
+  * However: [Open Data Portal](https://tfgm.com/data-analytics-and-insight/open-data-portal)
+  * But: [https://beenetwork-dev.api-tf.tfgm.com/](https://beenetwork-dev.api-tf.tfgm.com/)
+  * And: [https://beenetwork-staging.api-tf.tfgm.com/](https://beenetwork-staging.api-tf.tfgm.com/)

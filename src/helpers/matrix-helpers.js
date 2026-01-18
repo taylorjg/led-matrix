@@ -8,13 +8,16 @@ const appendCharacterToMatrix = (font, matrix, ch) => {
     return;
   }
 
-  matrix.forEach((line, index) => {
+  const { start, length } = value;
+
+  matrix.forEach((matrixLine, index) => {
     const characterLine = (value.lines[index] ?? "").slice(
-      value.start,
-      value.end + 1
+      start,
+      start + length
     );
-    const newLine = line + characterLine;
-    matrix[index] = newLine;
+    const gap = matrixLine ? " " : "";
+    const newMatrixLine = matrixLine + gap + characterLine;
+    matrix[index] = newMatrixLine;
   });
 };
 
