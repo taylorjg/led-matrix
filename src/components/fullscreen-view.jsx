@@ -1,7 +1,9 @@
+import {
+  FullscreenExit as FullscreenExitIcon,
+  PauseCircle as PauseCircleIcon,
+  PlayCircle as PlayCircleIcon,
+} from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
-import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
-import PauseCircleIcon from "@mui/icons-material/PauseCircle";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
 import { LedMatrixContainer } from "./led-matrix-container";
 import { Version } from "./version";
