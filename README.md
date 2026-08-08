@@ -1,3 +1,5 @@
+[![CI/CD](https://github.com/taylorjg/led-matrix/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/taylorjg/led-matrix/actions/workflows/ci-cd.yml)
+
 # Description
 
 I travel on the Metrolink several times per week and have often thought about implementing a scrolling LED matrix display, using React and SVG, to look a bit like the matrix displays on the trams. I finally got round to it.
